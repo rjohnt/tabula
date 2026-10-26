@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-26",
-  "note": "Back-sticker treatments Ryan chose to keep. Dark takes use the light (ivory/gold) Acutis mark and a gold Latin cross at top.",
+  "note": "Back-sticker treatments Ryan kept; #2 Roman inscriptional is the chosen design. All shortlisted takes have the Latin line and a gold double outer frame; dark takes use the light (ivory/gold) Acutis mark and a gold Latin cross.",
   "keep": [
     "Inscriptional.dc.html",
     "Tablet.dc.html",
@@ -8,5 +8,6 @@
     "UncialForest.dc.html",
     "ChiRho.dc.html",
     "Oxblood.dc.html"
-  ]
+  ],
+  "chosen": "Inscriptional.dc.html"
 }

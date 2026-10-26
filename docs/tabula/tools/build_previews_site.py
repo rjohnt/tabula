@@ -22,13 +22,16 @@ ORDO = [
     ("B-two-lanes", "B · Two lanes"),
     ("C-follow-along", "C · Follow along"),
     ("D-timeline-serif", "D · Timeline, Noto Serif (needs +flash)"),
+    ("E-hints-two", "Controls: two large labels + side-button cue"),
+    ("F-hints-none", "Controls: no boxes, one instruction line"),
 ]
 
 
 def take_cards():
     canvas = json.load(open(os.path.join(TAKES, "canvas.json")))
-    keep = json.load(open(os.path.join(TAKES, "shortlist.json")))["keep"]
-    fonts, rows, shortlist = set(), {}, []
+    meta = json.load(open(os.path.join(TAKES, "shortlist.json")))
+    keep, chosen = meta["keep"], meta.get("chosen")
+    fonts, rows, shortlist, picked = set(), {}, [], []
     for name in canvas["order"]:
         src = open(os.path.join(TAKES, name)).read()
         fonts.update(re.findall(r'<link rel="stylesheet" href="([^"]+)">', src))
@@ -40,12 +43,14 @@ def take_cards():
         rows.setdefault(board["y"], []).append((board["x"], card))
         if name in keep:
             shortlist.append((keep.index(name), card))
+        if name == chosen:
+            picked.append(card)
     ordered = [[c for _, c in sorted(cards)] for _, cards in sorted(rows.items())]
-    return fonts, ordered, [c for _, c in sorted(shortlist)]
+    return fonts, ordered, [c for _, c in sorted(shortlist)], picked
 
 
 def main():
-    fonts, rows, shortlist = take_cards()
+    fonts, rows, shortlist, picked = take_cards()
     links = "\n".join(f'<link rel="stylesheet" href="{u}">' for u in sorted(fonts))
     ordo = "".join(
         f'<figure class="screen"><img src="img/{n}.png" width="528" height="792" alt="{html.escape(t)}">'
@@ -54,7 +59,7 @@ def main():
     )
     row_titles = ["Back sticker takes, round 1", "Round 2: more like 1 and 2"]
     # Newest round first.
-    takes = f'<h2>Shortlist</h2><div class="row">{"".join(shortlist)}</div>' + "".join(
+    takes = (f'<h2>Chosen</h2><div class="row">{"".join(picked)}</div>' if picked else "") + f'<h2>Shortlist</h2><div class="row">{"".join(shortlist)}</div>' + "".join(
         f'<h2>{row_titles[i] if i < len(row_titles) else f"Round {i + 1}"}</h2><div class="row">{"".join(r)}</div>'
         for i, r in reversed(list(enumerate(rows)))
     )
@@ -83,7 +88,7 @@ figure{{margin:0}} figcaption{{color:var(--muted);font-size:14px;margin-top:10px
 <body>
 <main>
 <h1>Tabula previews</h1>
-<p class="note">Drafts. Sticker takes are the X3 back (64 × 98 mm) at 6 px/mm; the charging-pin cutout isn't placed yet. Order of Mass screens are 1-bit renders at the X3's native 528 × 792 with the firmware's built-in fonts.</p>
+<p class="note">Drafts. Sticker takes are the X3 back (64 × 98 mm) at 6 px/mm; see <a href="sizing.html">sizing on the device</a> for placement, device colors, and screen text. Order of Mass screens are 1-bit renders at the X3's native 528 × 792 with the firmware's built-in fonts.</p>
 {takes}
 <h2>Order of Mass on the X3</h2>
 <p class="note">Filled dot = today's proper. Hollow dot = the Ordinary. Posture at right.</p>
