@@ -111,3 +111,68 @@ Not suitable: **GotPrint** (https://www.gotprint.com/products/stickers/order.htm
 - Vistaprint's total didn't update when I clicked a size headlessly. Its figures add the displayed 2×2 base price to the displayed size add-on, and it has no custom sizes.
 - No price shown for StyleFlip custom skins (quote only), Etsy custom-skin sellers (blocked headless access), WrapPrinting (trade account) or PrintCustomWraps totals. Printful prices weren't verified on the page.
 - The exact size and position of the device's pogo-pin pad isn't known yet. Measure a unit before choosing a vendor whose cut rules need a minimum hole size.
+
+## 2b re-price (58 x 86 mm, Oct 26, 2026)
+
+Prices were pulled from each vendor's live calculator or the pricing service it calls on Mon Oct 26, 2026, ~1:15–2:00 PM CT (America/Chicago). Spec: 58 x 86 mm (2.28 x 3.39 in) rounded rectangle, ~2 mm corner radius, no hole, matte, removable preferred. Prices are in USD before tax. No carts, accounts, uploads or quote forms were used. "Not shown" means the site did not display it without starting a checkout.
+
+### Pricing
+
+| Vendor | Option | Size | Material/finish | Corner radius | Qty | Total | Per unit | Shipping | Turnaround | URL | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| StickerApp | Removable Stickers, rounded | 58 x 86 mm exact | White removable (low-tack, "no sticky residue") vinyl, soft-touch matte laminate | Editor "rounded" preset; radius not stated. Custom cutline in an uploaded PDF is accepted, so 2 mm can be set | 25 | $34 | $1.36 | Free standard | Production usually 1–2 days + 1–3 days shipping | https://stickerapp.com/stickers/removable-stickers | SKU RSWR-108. Matte and glossy cost the same |
+| StickerApp | Removable Stickers, rounded | 58 x 86 mm | same | same | 50 | $50 | $1.00 | Free standard | same | same | |
+| StickerApp | Removable Stickers, rounded | 58 x 86 mm | same | same | 100 | $74 | $0.74 | Free standard | same | same | |
+| StickerApp | Die-cut (regular vinyl), rounded | 58 x 86 mm | White vinyl, soft-touch matte | same as above | 25 / 50 / 100 | $34 / $50 / $74 | $1.36 / $1.00 / $0.74 | Free standard | same | https://stickerapp.com/stickers/die-cut-stickers | SKU DCRS-108. Same price as Removable, so Removable costs nothing extra |
+| StickerGiant | Rectangle stickers, custom size | 2.28 x 3.39 in exact | White BOPP 2.6 mil, matte laminate (same price as gloss), **permanent acrylic adhesive** | Default 0.125" (3.2 mm); any radius ≥ 0.04" (1 mm) on request in Special Instructions, so **2 mm is possible** | 25 | $57.00 | $2.28 | Free Ground per the help center (conditions not confirmed) | Production 3–5 business days | https://www.stickergiant.com/rectangle-stickers | No removable adhesive on the rectangle or die-cut product pages (only material and lamination options; Advanced Options shows only Special Instructions). The die-cut page prices the same |
+| StickerGiant | same | same | same | same | 50 | $69.00 | $1.38 | same | same | same | |
+| StickerGiant | same | same | same | same | 100 | $96.00 | $0.96 | same | same | same | |
+| Sticker Mule | Rounded corner stickers | 2.28 x 3.39 in | Thick matte vinyl (permanent) | Fixed 0.25" (6.35 mm) default; custom down to **0.1" (2.54 mm)** on request in the upload instructions. **2 mm not possible**; closest is 2.54 mm | 20 | $32 | $1.60 | Free | "4 day turnaround" | https://www.stickermule.com/products/rounded-corner-stickers | No removable option on this product. Quantities come in steps of 10 |
+| Sticker Mule | same | same | same | same | 30 | $44 | $1.47 | Free | same | same | |
+| Sticker Mule | same | same | same | same | 50 | $65 | $1.30 | Free | same | same | |
+| Sticker Mule | same | same | same | same | 100 | $82 | $0.82 | Free | same | same | |
+| Sticker Ninja | Die-cut, Rounded Corner shape | 2.28 x 3.39 in | Matte laminated vinyl (permanent) | Radius not stated | 25 | $33.91 | $1.36 | Free US shipping (USPS Priority, typically 2–5 days) | Production 7–10 business days, rush available | https://stickerninja.com/product/die-cut-stickers/ | The calculator priced 25, but the FAQ says the default of **50 is the minimum**, so 25 may not be orderable |
+| Sticker Ninja | same | same | same | same | 50 | $53.05 | $1.06 | same | same | same | |
+| Sticker Ninja | same | same | same | same | 100 | $84.23 | $0.84 | same | same | same | |
+| UPrinting | Die-cut singles, Square/Rectangle (Rounded Corners) | **2.25 x 3.25 in (57.2 x 82.6 mm)**, the nearest 0.25" step that fits inside 58 x 86 | **Removable White BOPP + Matte Laminate** | Preset radius not stated on the die-cut page. UPrinting's cut-singles page says "Optional rounded corners, 1/4" radius" (6.35 mm). 2 mm would likely need a custom-shape cutline (not confirmed) | 25 / 50 | not offered | n/a | not shown | n/a | https://www.uprinting.com/die-cut-stickers.html | The quantity list for this material starts at 100 |
+| UPrinting | same | same | Removable White BOPP + Matte Laminate | same | 100 | $71.45 | $0.71 | not shown | Printing 4 business days | same | The FAQ recommends removable white BOPP for removability. Exact 2.28 x 3.39 rounds up to 2.5 x 3.5 ($79.98 per 100) |
+| UPrinting | same | 2.25 x 3.25 in | Matte White Outdoor Vinyl (permanent, built-in matte, no separate finish) | same | 25 | $34.05 | $1.36 | not shown | Printing 3 business days | same | |
+| UPrinting | same | same | same | same | 50 | $45.41 | $0.91 | not shown | same | same | |
+| UPrinting | same | same | same | same | 100 | $59.35 | $0.59 | not shown | same | same | Cheapest at 100, but permanent and 0.8 x 3.6 mm under size |
+
+### Minimum text size
+
+Design check:
+- The URL line "ACUTISIGNATIUS.COM/TABULA" is Cinzel caps with a 1.5 mm cap height (9 px at 6 px/mm).
+- Cinzel's cap height is about 0.7 em, so this is roughly a **6 pt** font size.
+- It is gold #c9a54a at 85% opacity on dark green #184c30, i.e. reversed (light on dark).
+- The hairline is 1 px, about **0.17 mm (0.48 pt)**.
+
+| Vendor | Stated minimum | Source | 1.5 mm cap / ~6 pt OK? | Notes |
+|---|---|---|---|---|
+| StickerApp | No numeric minimum. Says "small text and thin lines need full 300 DPI" and "small text and fine lines need a larger size" | https://stickerapp.com/support/stickers/products/sticker-sheet/file-setup-for-sticker-sheets · https://stickerapp.com/support/artwork-design/sizes/sticker-size-guide | Likely OK (no stated floor) | Keep text ≥ 2 mm inside the cutline, add 2 mm bleed, outline the fonts. No reversed-text or hairline rule stated |
+| StickerGiant | 5 pt (text below 5 pt must be vector) | https://support.stickergiant.com/hc/en-us/articles/32179095997460-Font-Requirements-When-Setting-Up-Your-Files | **Yes** (~6 pt > 5 pt) | Says light-on-dark works for distance viewing; no reversed-text rule. 1/8" (3.2 mm) safe inset by default, 1/16" narrow inset on request. No line-weight minimum stated |
+| Sticker Mule | 6 pt font; 1 pt line | https://www.stickermule.com/support/faq/artwork/minimum-font-size · https://www.stickermule.com/support/faq/artwork/what-s-the-recommended-line-thickness | **Borderline** (exactly at 6 pt). **Hairline fails** (0.48 pt < 1 pt) | Explicitly warns that light fonts and lines on dark backgrounds can be "eaten" as the dark ink spreads, and says to go thicker. Thin or decorative fonts may need more size |
+| Sticker Ninja | No numeric minimum. "Very small text and fine lines may not reproduce clearly" | https://stickerninja.com.au/specifications/ (AU sister site's artwork guidelines; the US site has no equivalent page) | Likely OK (no stated floor) | Keep key text ≥ 3 mm inside the cut edge, which is tighter than the others. Outline the fonts. Check the proof |
+| UPrinting | No sticker minimum. Font guide suggests 6–10 pt for small info text and 6–8 pt for return-address labels. Foil/spot UV needs 8 pt and 1.5 pt strokes | https://www.uprinting.com/blog/stickers-labels-font-size/ · https://www.uprinting.com/support/design-considerations/ | **Borderline** (at the bottom of the 6 pt range) | No reversed-text rule. 1.5 pt stroke guidance applies only to foil/spot UV. 0.125" bleed |
+
+**Takeaways for the art:**
+- At ~6 pt the URL meets or matches every stated minimum.
+- Being reversed at 85% opacity is the real risk. Flatten the gold to a solid CMYK tint rather than a transparency.
+- Consider bumping the cap height to about 1.8–2 mm (~7–8 pt).
+- Thicken the 0.17 mm hairline to at least 0.35 mm (1 pt). Sticker Mule calls 1 pt the minimum, and reversed lines need more.
+
+### Recommendation
+
+**StickerApp Removable** is the best fit:
+- Exact 58 x 86 mm size.
+- Low-tack removable adhesive with soft-touch matte.
+- A 2 mm radius is achievable with an uploaded cutline.
+- Prices: 25 = $34, 50 = $50, 100 = $74, with free shipping and about 1–2 day production. That is the same price as its permanent vinyl and the lowest 25 and 50 prices among the exact-size options.
+
+Other options:
+- StickerGiant can do an exact 2 mm radius, but it is permanent only and costs the most.
+- Sticker Mule can't go below a 2.54 mm radius and has no removable option.
+- UPrinting matte vinyl is cheapest at 100 ($59.35), but it is permanent and slightly undersized (2.25 x 3.25 in). Its removable BOPP starts at 100 ($71.45).
+
+Before ordering anywhere, thicken the hairline and consider ~7–8 pt for the reversed URL.
