@@ -31,6 +31,7 @@ def take_cards():
     canvas = json.load(open(os.path.join(TAKES, "canvas.json")))
     meta = json.load(open(os.path.join(TAKES, "shortlist.json")))
     keep, chosen = meta["keep"], meta.get("chosen")
+    variants = meta.get("chosen_variants", [])
     fonts, rows, shortlist, picked = set(), {}, [], []
     for name in canvas["order"]:
         src = open(os.path.join(TAKES, name)).read()
@@ -44,6 +45,8 @@ def take_cards():
         if name in keep:
             shortlist.append((keep.index(name), card))
         if name == chosen:
+            picked.insert(0, card)
+        elif name in variants:
             picked.append(card)
     ordered = [[c for _, c in sorted(cards)] for _, cards in sorted(rows.items())]
     return fonts, ordered, [c for _, c in sorted(shortlist)], picked

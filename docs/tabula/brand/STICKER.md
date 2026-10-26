@@ -1,6 +1,6 @@
 # Tabula back sticker: chosen design
 
-**Chosen (Oct 26, 2026):** take #2, Roman inscriptional. Source: `sticker-takes/Inscriptional.dc.html`. Preview: `../previews/index.html` (shortlist) and `../previews/sizing.html` (on the device).
+**Chosen (Oct 26, 2026):** take 2b, Roman inscriptional with the site URL. Source: `sticker-takes/InscriptionalURL.dc.html` (base design without the URL: `Inscriptional.dc.html`). Preview: `../previews/index.html` (shortlist) and `../previews/sizing.html` (on the device).
 
 ## Design
 - Ground: forest green `#184c30`. Gold `#c9a54a` double outer frame (1.5 px border + 1 px inner rule, 22 px radius at 6 px/mm).
@@ -9,6 +9,7 @@
 - "MISSALE · BREVIARIVM" in Cinzel, gold.
 - "the Mass and the Hours, in your pocket" in Cormorant Garamond italic, ivory.
 - Attribution at bottom: light (ivory/gold) Acutis Ignatius mark + "by Acutis Ignatius", italic.
+- Under it, "ACUTISIGNATIUS.COM/TABULA" in small Cinzel capitals, gold at 85% opacity, 9 px at 6 px/mm (about 1.5 mm cap height; check it stays legible at print size). It points to the landing page.
 
 ## Size and placement (proposed)
 - Option A from `sizing.html`: **58 × 86 mm**, 2 mm corner radius, 3 mm from the sides and 2.5 mm from the top of the 64 × 98 mm back. Ends ~3.3 mm above the charging pins, so no cutout.

@@ -42,6 +42,19 @@ PAGE = [
 ]
 
 
+# Compline (Ad Completorium), 1962 Breviary; English is Douay-Rheims (public domain).
+COMPLINE = [
+    ("h", "Ad Completorium"),
+    ("la", "Jube, domne, benedícere. Noctem quiétam et finem perféctum concédat nobis Dóminus omnípotens. Amen."),
+    ("en", "Pray, sir, a blessing. May the Lord Almighty grant us a quiet night and a perfect end. Amen."),
+    ("r", "1 Pet. 5:8-9"),
+    ("la", "Fratres: Sóbrii estóte, et vigiláte: quia adversárius vester diábolus tamquam leo rúgiens círcuit, "
+           "quærens quem dévoret: cui resístite fortes in fide."),
+    ("en", "Brethren: Be sober and watch: because your adversary the devil, as a roaring lion, goeth about "
+           "seeking whom he may devour: whom resist ye, strong in faith."),
+]
+
+
 def wrap(draw, text, f, width):
     words, lines, cur = text.split(), [], []
     for w in words:
@@ -68,7 +81,7 @@ def draw_justified(draw, words, f, x, y, width, last):
         cx += draw.textlength(w, font=f) + gap
 
 
-def render(pt, path, justify=True):
+def render(pt, path, justify=True, page=None, title="CHRIST THE KING"):
     reg = font("NotoSans/NotoSans-Regular.ttf", pt)
     bold = font("NotoSans/NotoSans-Bold.ttf", pt)
     ital = font("NotoSans/NotoSans-Italic.ttf", pt)
@@ -82,7 +95,7 @@ def render(pt, path, justify=True):
     y = MARGIN_TOP
     bottom = H - STATUS_H - 8
     styles = {"h": bold, "la": reg, "en": ital, "r": ital}
-    for style, text in PAGE:
+    for style, text in page or PAGE:
         f = styles[style]
         lines = wrap(d, text, f, width)
         for i, words in enumerate(lines):
@@ -101,7 +114,7 @@ def render(pt, path, justify=True):
     d.rectangle((MARGIN_X, sy + 3, MARGIN_X + 18, sy + 11), outline=0, width=1)
     d.rectangle((MARGIN_X + 2, sy + 5, MARGIN_X + 14, sy + 9), fill=0)
     d.text((MARGIN_X + 24, sy), "86%", font=small, fill=0)
-    d.text((W / 2, sy), "CHRIST THE KING", font=small, fill=0, anchor="ma")
+    d.text((W / 2, sy), title, font=small, fill=0, anchor="ma")
     d.text((W - MARGIN_X, sy), "1 / 6", font=small, fill=0, anchor="ra")
     img.point(lambda v: 0 if v < 128 else 255).convert("1").save(path)
 
@@ -111,6 +124,40 @@ def main():
     os.makedirs(out, exist_ok=True)
     render(14, os.path.join(out, "reader-14pt.png"))
     render(18, os.path.join(out, "reader-18pt.png"), justify=False)
+    render(14, os.path.join(out, "hours-compline.png"), justify=False, page=COMPLINE, title="COMPLINE")
+    render_home(os.path.join(out, "home.png"))
+
+
+def render_home(path):
+    """Tabula Home (TabulaHomeActivity) with the two-label controls treatment."""
+    ui8 = font("Ubuntu/Ubuntu-Regular.ttf", 8)
+    ui10 = font("Ubuntu/Ubuntu-Regular.ttf", 10)
+    ui12b = font("Ubuntu/Ubuntu-Bold.ttf", 12)
+    img = Image.new("L", (W, H), 255)
+    d = ImageDraw.Draw(img)
+    d.text((20, 14), "100%", font=ui8, fill=0)
+    d.text((W - 20, 14), "6:55", font=ui8, fill=0, anchor="ra")
+    d.text((20, 40), "Tabula", font=ui12b, fill=0)
+    d.line((20, 80, W - 20, 80), fill=0, width=1)
+    rows = [("Continue Reading", "Missale Romanum"), ("Today", "Christ the King"), ("Order of Mass", None),
+            ("Missal", None), ("Prayers & Hours", None), ("Readings", None), ("Library", None), ("Settings", None)]
+    y = 96
+    for i, (label, sub) in enumerate(rows):
+        h = 72 if sub else 58
+        if i == 1:
+            d.rounded_rectangle((14, y - 4, W - 14, y + h - 10), radius=6, fill=0)
+        fg = 255 if i == 1 else 0
+        d.text((28, y + 4), label, font=ui12b, fill=fg)
+        if sub:
+            d.text((28, y + 34), sub, font=ui10, fill=fg)
+        y += h
+    by = H - 46
+    for x, label in ((38, "\u00ab Back"), (154, "Open")):
+        d.rounded_rectangle((x, by, x + 105, H - 1), radius=6, fill=0)
+        d.text((x + 53, by + 23), label, font=ui12b, fill=255, anchor="mm")
+    d.text((W - 20, by + 4), "side buttons", font=ui8, fill=0, anchor="ra")
+    d.text((W - 20, by + 22), "move up / down", font=ui8, fill=0, anchor="ra")
+    img.point(lambda v: 0 if v < 128 else 255).convert("1").save(path)
 
 
 if __name__ == "__main__":

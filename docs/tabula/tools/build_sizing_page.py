@@ -36,7 +36,8 @@ def mm(v):
 
 
 def templates():
-    keep = json.load(open(os.path.join(TAKES, "shortlist.json")))["keep"]
+    meta = json.load(open(os.path.join(TAKES, "shortlist.json")))
+    keep = [meta["chosen"]] + meta.get("chosen_variants", []) + [k for k in meta["keep"] if k != meta.get("chosen")]
     canvas = json.load(open(os.path.join(TAKES, "canvas.json")))
     out, fonts = [], set()
     for name in keep:
