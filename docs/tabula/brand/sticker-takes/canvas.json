@@ -1,0 +1,132 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-26T15:10:00Z"
+  },
+  "title": "Tabula Sticker Takes",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 384,
+      "h": 588,
+      "title": "1 \u00b7 Uncial",
+      "radius": 36
+    },
+    "Inscriptional.dc.html": {
+      "x": 464,
+      "y": 0,
+      "w": 384,
+      "h": 588,
+      "title": "2 \u00b7 Roman inscriptional",
+      "radius": 36
+    },
+    "Blackletter.dc.html": {
+      "x": 928,
+      "y": 0,
+      "w": 384,
+      "h": 588,
+      "title": "3 \u00b7 Blackletter rubric",
+      "radius": 36
+    },
+    "Illuminated.dc.html": {
+      "x": 1392,
+      "y": 0,
+      "w": 384,
+      "h": 588,
+      "title": "4 \u00b7 Illuminated initial",
+      "radius": 36
+    },
+    "Rubric.dc.html": {
+      "x": 1856,
+      "y": 0,
+      "w": 384,
+      "h": 588,
+      "title": "5 \u00b7 Missal page",
+      "radius": 36
+    },
+    "Tablet.dc.html": {
+      "x": 0,
+      "y": 1000,
+      "w": 384,
+      "h": 588,
+      "title": "6 \u00b7 Inscribed tablet",
+      "radius": 36
+    },
+    "ParchmentCaps.dc.html": {
+      "x": 464,
+      "y": 1000,
+      "w": 384,
+      "h": 588,
+      "title": "7 \u00b7 Capitals on parchment",
+      "radius": 36
+    },
+    "UncialForest.dc.html": {
+      "x": 928,
+      "y": 1000,
+      "w": 384,
+      "h": 588,
+      "title": "8 \u00b7 Uncial on forest",
+      "radius": 36
+    },
+    "GoldLeaf.dc.html": {
+      "x": 1392,
+      "y": 1000,
+      "w": 384,
+      "h": 588,
+      "title": "9 \u00b7 Gold-leaf frame",
+      "radius": 36
+    },
+    "ChiRho.dc.html": {
+      "x": 1856,
+      "y": 1000,
+      "w": 384,
+      "h": 588,
+      "title": "10 \u00b7 Chi-rho crest",
+      "radius": 36
+    },
+    "Oxblood.dc.html": {
+      "x": 2320,
+      "y": 1000,
+      "w": 384,
+      "h": 588,
+      "title": "11 \u00b7 Oxblood & gold",
+      "radius": 36
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Inscriptional.dc.html",
+    "Blackletter.dc.html",
+    "Illuminated.dc.html",
+    "Rubric.dc.html",
+    "Tablet.dc.html",
+    "ParchmentCaps.dc.html",
+    "UncialForest.dc.html",
+    "GoldLeaf.dc.html",
+    "ChiRho.dc.html",
+    "Oxblood.dc.html"
+  ],
+  "notes": {
+    "heading": {
+      "x": 0,
+      "y": -260,
+      "text": "Tabula back skin: five takes (X3 back, 64 \u00d7 98 mm, shown at 6 px/mm)",
+      "kind": "title1",
+      "maxW": 2240
+    },
+    "heading2": {
+      "x": 0,
+      "y": 740,
+      "text": "Round 2: more like 1 and 2",
+      "kind": "title1",
+      "maxW": 2704
+    }
+  },
+  "designSystems": []
+}
