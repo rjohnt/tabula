@@ -41,6 +41,8 @@ including while you read.
 
 ## Proprium de Tempore: know what's coming
 
+<img src="docs/images/tabula/screen-reading.png" alt="The Introit for the feast of Ss. Simon and Jude, each Latin line with its English beneath" width="264" align="left">
+
 The propers of each day's Mass arrive on their own: Introit, Collect,
 Epistle, Gradual, Gospel, Offertory and Communion. Pray with them at home
 before Mass, and you'll arrive already knowing what will be prayed.
@@ -49,20 +51,30 @@ Read just the propers, or the whole Mass straight through. Each Latin line has
 its English directly beneath, set close together, in regular and italic type.
 The gap falls between pairs, never inside one.
 
+<br clear="left">
+
 ## Ordo Missae: learn the shape of the Mass
+
+<img src="docs/images/tabula/screen-ordo.png" alt="The Order of Mass as a timeline: today's propers marked with filled dots, the Ordinary with hollow ones, and a kneel, sit or stand figure on each part" width="264" align="right">
 
 The whole Mass sits on one line, from the prayers at the foot of the altar to
 the Last Gospel. Today's propers are marked, with the unchanging Ordinary
 between them. Each part shows a small figure: **kneel**, **stand** or
 **sit**.
 
+<br clear="right">
+
 ## Officium Divinum: pray the Hours in English, in Latin, or both
+
+<img src="docs/images/tabula/screen-compline.png" alt="Compline: Ad Completorium, the opening versicle in Latin with its English beneath" width="264" align="left">
 
 Lauds, Vespers, Compline and the rest of the Divine Office. Pray in Latin, in
 English, or both together; the choice is in Settings.
 
 The Latin carries the very words that monks, saints and ordinary faithful
 have prayed for well over a thousand years.
+
+<br clear="left">
 
 ![The eight Hours on an arc, from Matutinum to Completorium, with the Hour now marked by a sun](docs/images/tabula/site-hours.jpg)
 
@@ -86,6 +98,8 @@ Settings.
 <br clear="left">
 
 ## Res ipsa: small enough to keep beside you
+
+![Tabula front and back at the same scale: the Introit on the screen, the green Missale · Breviarium sticker on the back](docs/images/tabula/site-object.jpg)
 
 Smaller than a holy card, and just 5 mm thin. The back carries its name in
 Latin, *Missale · Breviarium*: the missal and the breviary.
