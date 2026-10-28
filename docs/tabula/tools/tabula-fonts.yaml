@@ -1,0 +1,17 @@
+# Tabula reading font, converted to .cpfont for the X3 (no runtime TTF on the C3).
+# Build: .venv/bin/python lib/EpdFont/scripts/build-sd-fonts.py \
+#          --config docs/tabula/tools/tabula-fonts.yaml --output-dir build/tabula-fonts
+scriptGroups:
+  - {tag: latin, label: Latin}
+
+families:
+  - name: EBGaramond
+    description: "EB Garamond by Georg Duffner and Octavio Pardo (OFL), Tabula's reading face"
+    scripts: [latin]
+    intervals: latin-ext
+    sizes: [14, 16, 18, 20, 22]
+    styles:
+      regular:    {url: "https://raw.githubusercontent.com/google/fonts/main/ofl/ebgaramond/EBGaramond%5Bwght%5D.ttf", variable: {wght: 400}}
+      bold:       {url: "https://raw.githubusercontent.com/google/fonts/main/ofl/ebgaramond/EBGaramond%5Bwght%5D.ttf", variable: {wght: 600}}
+      italic:     {url: "https://raw.githubusercontent.com/google/fonts/main/ofl/ebgaramond/EBGaramond-Italic%5Bwght%5D.ttf", variable: {wght: 400}}
+      bolditalic: {url: "https://raw.githubusercontent.com/google/fonts/main/ofl/ebgaramond/EBGaramond-Italic%5Bwght%5D.ttf", variable: {wght: 600}}

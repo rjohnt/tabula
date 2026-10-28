@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "title": "Order of Mass",
+  "note": "1962 Low Mass. Postures follow common US custom; the parish may edit them.",
+  "steps": [
+    { "section": "Mass of the Catechumens" },
+    { "id": "foot",       "la": "Ad pedes altaris",      "en": "Prayers at the Foot of the Altar", "kind": "ordinary", "posture": "kneel" },
+    { "id": "introit",    "la": "Introitus",             "en": "Introit",                          "kind": "proper",   "posture": "kneel" },
+    { "id": "kyrie",      "la": "Kyrie",                 "en": "Lord, have mercy",                 "kind": "ordinary", "posture": "kneel" },
+    { "id": "gloria",     "la": "Gloria",                "en": "Glory to God",                     "kind": "ordinary", "posture": "kneel" },
+    { "id": "collect",    "la": "Oratio",                "en": "Collect",                          "kind": "proper",   "posture": "kneel" },
+    { "id": "epistle",    "la": "Epistola",              "en": "Epistle",                          "kind": "proper",   "posture": "sit" },
+    { "id": "gradual",    "la": "Graduale",              "en": "Gradual · Alleluia",               "kind": "proper",   "posture": "sit" },
+    { "id": "gospel",     "la": "Evangelium",            "en": "Gospel",                           "kind": "proper",   "posture": "stand" },
+    { "id": "credo",      "la": "Credo",                 "en": "Creed",                            "kind": "ordinary", "posture": "stand" },
+    { "section": "Mass of the Faithful" },
+    { "id": "offertory",  "la": "Offertorium",           "en": "Offertory",                        "kind": "proper",   "posture": "sit" },
+    { "id": "lavabo",     "la": "Lavabo · Orate fratres","en": "Washing of Hands",                 "kind": "ordinary", "posture": "sit" },
+    { "id": "secret",     "la": "Secreta",               "en": "Secret",                           "kind": "proper",   "posture": "kneel" },
+    { "id": "preface",    "la": "Praefatio",             "en": "Preface",                          "kind": "ordinary", "posture": "kneel" },
+    { "id": "sanctus",    "la": "Sanctus",               "en": "Holy, Holy, Holy",                 "kind": "ordinary", "posture": "kneel" },
+    { "id": "canon",      "la": "Canon Missae",          "en": "The Canon",                        "kind": "ordinary", "posture": "kneel" },
+    { "id": "pater",      "la": "Pater noster",          "en": "Our Father",                       "kind": "ordinary", "posture": "kneel" },
+    { "id": "agnus",      "la": "Agnus Dei",             "en": "Lamb of God",                      "kind": "ordinary", "posture": "kneel" },
+    { "id": "communion",  "la": "Communio fidelium",     "en": "Communion of the Faithful",        "kind": "ordinary", "posture": "kneel" },
+    { "id": "commant",    "la": "Communio",              "en": "Communion Antiphon",               "kind": "proper",   "posture": "kneel" },
+    { "id": "postcomm",   "la": "Postcommunio",          "en": "Postcommunion",                    "kind": "proper",   "posture": "kneel" },
+    { "id": "dismissal",  "la": "Ite, missa est",        "en": "Dismissal & Blessing",             "kind": "ordinary", "posture": "kneel" },
+    { "id": "lastgospel", "la": "Ultimum Evangelium",    "en": "Last Gospel",                      "kind": "ordinary", "posture": "stand" }
+  ]
+}

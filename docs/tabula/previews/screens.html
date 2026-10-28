@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabula Screens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=UnifrakturMaguntia&family=Uncial+Antiqua&display=swap">
+<style>
+:root{--bg:#efece5;--ink:#1f1e1b;--muted:#5d5a52;--card:#e4e0d6;--accent:#7a2a1c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1b1c1a;--ink:#ecebe6;--muted:#a8a69e;--card:#262724;--accent:#d98f7a}}
+:root[data-theme="dark"]{--bg:#1b1c1a;--ink:#ecebe6;--muted:#a8a69e;--card:#262724;--accent:#d98f7a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,sans-serif}
+main{max-width:1900px;margin:0 auto;padding:32px 16px 80px}
+h1{font-size:30px;margin:0 0 6px;font-family:'Cinzel',serif;letter-spacing:.06em}
+h2{font-size:22px;margin:56px 0 6px;font-family:'Cinzel',serif;letter-spacing:.04em}
+h3{font-size:16px;margin:28px 0 10px;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+p.note{color:var(--muted);margin:0 0 18px;max-width:78ch;line-height:1.5}
+.toolbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid color-mix(in srgb,var(--ink) 15%,transparent)}
+.toolbar button{font:inherit;font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid color-mix(in srgb,var(--ink) 25%,transparent);background:transparent;color:var(--ink);cursor:pointer}
+.toolbar button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.toolbar a{color:var(--ink);font-size:14px;margin-left:auto}
+.row{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+figure{margin:0}
+figcaption{color:var(--muted);font-size:13px;margin-top:8px;max-width:calc(528px * var(--z));line-height:1.4}
+figcaption b{color:var(--ink)}
+.dev{--z:.62;width:calc(548px * var(--z));height:calc(812px * var(--z));padding:calc(10px * var(--z));background:#cfcac0;border-radius:calc(18px * var(--z));box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.dev.full{--z:1}
+.scr{width:528px;height:792px;transform:scale(var(--z));transform-origin:top left;background:#f6f5f1;color:#111;position:relative;overflow:hidden;font-family:'EB Garamond',Georgia,serif}
+.flow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.arrow{font-size:28px;color:var(--muted)}
+.callout{background:var(--card);border-radius:12px;padding:16px 20px;max-width:900px;line-height:1.55}
+.callout ol{margin:6px 0 0 18px;padding:0}
+.hintstrip{width:528px;max-width:100%;background:#f6f5f1;border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.15)}
+.hintstrip svg{display:block;width:100%;height:auto}
+@media (max-width:600px){.dev{--z:.56}}
+/* screen typography */
+.cap{font-family:'Cinzel',serif;letter-spacing:.12em}
+.sc{font-family:'Cormorant SC',serif;letter-spacing:.06em}
+.abs{position:absolute;left:0;right:0}
+.lat{font-size:21px;line-height:1.36}
+.eng{font-size:19px;line-height:1.34;font-style:italic;color:#333}
+.rub{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.18em}
+.item{display:flex;align-items:center;gap:14px;padding:13px 22px}
+.item.sel{background:#111;color:#f6f5f1}
+.item .t{font-size:24px;line-height:1.1}
+.item .s{font-size:16px;font-style:italic;opacity:.8;margin-top:3px}
+</style>
+</head>
+<body>
+<main>
+<h1>Tabula · Screens</h1>
+<p class="note">Draft treatments for the X3 (528 × 792, e-ink). Black, white and two grays only, with no color on the panel. Text is today's real 1962 content: Ss. Simon &amp; Jude, Wed 28 Oct 2026, from Divinum Officium. Fonts here are web stand-ins (Cinzel, EB Garamond, Cormorant SC). All are OFL and can be converted to device fonts, as backmuse already does with EB Garamond.</p>
+
+<div class="toolbar" role="toolbar" aria-label="Screen size">
+  <button type="button" data-z=".45">Small</button>
+  <button type="button" data-z=".62" aria-pressed="true">Medium</button>
+  <button type="button" data-z="1">1 : 1 px</button>
+  <a href="index.html">← Earlier previews</a>
+</div>
+
+<h2>Round 3 · sleep screens, all light or all dark</h2>
+<p class="note">No large light shape on a dark field. Each design is drawn once in light and shown inverted for dark, so a single setting (Light / Dark) picks the mode. Every screen carries the feast, the date in Latin and the Hour arc in the same band. None of these is Chorus.</p>
+<div id="sleep3"></div>
+
+<h2>Round 2 · header bars and postures</h2>
+<p class="note">Six top bars for the Today screen. Everything under the bar stays the same (Chorus arch, feast, choices, arched hints). The bar lives in y 0–44, so nothing below moves. Then three ways to show the posture at each part of the Mass.</p>
+<h3>Today: top bar</h3>
+<div class="row" id="headers"></div>
+<h3>Order of Mass: kneel · stand · sit</h3>
+<p class="note">Posture marks are small figures drawn in 1-bit, 24 px. Postures come from <code>ordo.json</code>, so the parish can edit them without new firmware.</p>
+<div class="row" id="postures"></div>
+<div class="row" id="posture-legend" style="margin-top:16px"></div>
+
+<h2>Direction · Oct 28</h2>
+<p class="note"><b>Screens:</b> B · Chorus. <b>Button hints:</b> style I (arched niches) with English words. <b>Sleep:</b> the arched tablet from the Chorus row, shown with a pointed-arch variant to choose between. <b>Rule:</b> no frame or ornament may touch text or another element. Everything below is checked at 1 : 1.</p>
+<div class="row" id="direction"></div>
+<h3>Sleep: round or pointed tablet?</h3>
+<div class="row" id="direction-sleep"></div>
+
+<h2>1 · No file explorer: launch straight into reading</h2>
+<div class="callout">
+<b>Proposed flow</b> (replaces today's Home list, where every item opens the file browser):
+<ol>
+<li><b>Wake from sleep:</b> back on the exact page you were reading. Nothing in between.</li>
+<li><b>First wake of a new day, or power-on:</b> <i>Hodie</i> (Today). One screen with the feast, and big choices: <b>Today's Mass</b>, <b>the Hour now</b> (picked by the clock), and <b>Continue</b>.</li>
+<li><b>Select on Today's Mass:</b> opens the propers EPUB at the Introit. Back returns to <i>Hodie</i>. That's the whole tree.</li>
+<li><b>Other days, other Hours, Order of Mass</b> sit one level down (<i>Plura</i> / More), as named lists, never folders or filenames.</li>
+<li><b>Settings</b> has three rows: Text size, Wi-Fi, About. Everything else stays at parish defaults.</li>
+</ol>
+</div>
+<div class="flow" id="flow" style="margin-top:20px"></div>
+
+<details><summary style="cursor:pointer;margin-top:48px;font:600 18px Cinzel,serif">Earlier explorations (superseded)</summary>
+<h2>2 · Three treatments</h2>
+<p class="note"><b>A · Claustrum</b> (cloister): round Romanesque arches, voussoirs, an arcade along the edges. <b>B · Chorus</b> (choir): pointed lancets, quatrefoils, tracery. <b>C · Tabula altaris</b> (altar card): a ruled frame, corner crosses, Chi-Rho, rubric capitals. Each row is one treatment across the main screens.</p>
+<div id="treatments"></div>
+
+<h2>3 · Button hints: three Catholic treatments</h2>
+<p class="note">The four buttons sit under the hints at x = 38 / 154 / 268 / 384, each 106 × 40 px (the X3 layout in <code>BaseTheme::drawButtonHints</code>). Each treatment is shown at 1 : 1 width as a strip, then on the Today screen. Reading pages show no hints in any treatment.</p>
+<div id="hints"></div>
+
+<h2>4 · Sleep: Tabula screensaver</h2>
+<p class="note">Drawn from the back-sticker takes, so the device's back and its resting screen match. All three share the sticker's rounded double frame, plain Latin cross, tracked TABULA, inscriptional MISSALE · BREVIARIVM and the Acutis mark. Green and gold become black and white on e-ink, so the dark takes are inverted. Latin throughout: the date is in Roman numerals, and the eight-Hour arc comes from the backmuse screensaver. Tap a screen to see it at 1 : 1. A sleeping screen uses no power.</p>
+<div class="row" id="sleep"></div>
+</details>
+</main>
+
+<script>
+const W=528,H=792,HINT_X=[38,154,268,384],HINT_W=106,HINT_H=40;
+const DAY={la:'Ss. Simonis et Judæ',la2:'Apostolorum',en:'Ss. Simon & Jude, Apostles',cls:'II. classis',color:'Rubeus',dateLa:'Feria IV · die XXVIII Octobris',dateEn:'Wednesday, 28 October',yearLa:'MMXXVI'};
+const HOURS=[['Matutinum','Matins'],['Laudes','Lauds'],['Prima','Prime'],['Tertia','Terce'],['Sexta','Sext'],['Nona','None'],['Vesperæ','Vespers'],['Completorium','Compline']];
+const NOW=6; // Vespers
+
+// ---------- ornament primitives (SVG strings) ----------
+const svg=(w,h,body,style='')=>`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;${style}" aria-hidden="true">${body}</svg>`;
+function roundArch(x0,x1,y0,yb,t=10,vous=true,sw=2){ // romanesque arch w/ voussoirs
+  const cx=(x0+x1)/2,r=(x1-x0)/2,R=r+t;let s=`<path d="M${x0} ${yb}V${y0}A${r} ${r} 0 0 1 ${x1} ${y0}V${yb}" fill="none" stroke="#111" stroke-width="${sw}"/>`;
+  s+=`<path d="M${x0-t} ${yb}V${y0}A${R} ${R} 0 0 1 ${x1+t} ${y0}V${yb}" fill="none" stroke="#111" stroke-width="${sw}"/>`;
+  if(vous){const n=Math.max(7,Math.round(r/9))|1;for(let i=1;i<n;i++){const a=Math.PI*i/n;s+=`<line x1="${cx-r*Math.cos(a)}" y1="${y0-r*Math.sin(a)}" x2="${cx-R*Math.cos(a)}" y2="${y0-R*Math.sin(a)}" stroke="#111" stroke-width="1.4"/>`}}
+  return s}
+function column(x,y0,y1,w=10){return `<rect x="${x-w/2}" y="${y0}" width="${w}" height="${y1-y0}" fill="none" stroke="#111" stroke-width="1.6"/><rect x="${x-w/2-4}" y="${y0-6}" width="${w+8}" height="6" fill="#111"/><rect x="${x-w/2-4}" y="${y1}" width="${w+8}" height="6" fill="#111"/>`}
+function arcade(x0,x1,y,h,n,fill=false){let s='';const bw=(x1-x0)/n;for(let i=0;i<n;i++){const a=x0+i*bw,b=a+bw,r=bw/2-3;s+=`<path d="M${a+3} ${y+h}V${y+r}A${r} ${r} 0 0 1 ${b-3} ${y+r}V${y+h}" fill="${fill?'#111':'none'}" stroke="#111" stroke-width="1.5"/>`}s+=`<line x1="${x0}" y1="${y+h}" x2="${x1}" y2="${y+h}" stroke="#111" stroke-width="2"/>`;return s}
+function lancet(x0,x1,yb,ytop,sw=2){const cx=(x0+x1)/2,w=x1-x0,spring=ytop+w*0.87;return `<path d="M${x0} ${yb}V${spring}A${w} ${w} 0 0 1 ${cx} ${ytop}A${w} ${w} 0 0 1 ${x1} ${spring}V${yb}" fill="none" stroke="#111" stroke-width="${sw}"/>`}
+function quatrefoil(cx,cy,r,fill='none',sw=1.6){const o=r*.5;let s='';for(const [dx,dy] of [[0,-o],[o,0],[0,o],[-o,0]])s+=`<circle cx="${cx+dx}" cy="${cy+dy}" r="${r*.52}" fill="${fill}" stroke="#111" stroke-width="${sw}"/>`;return s+(fill==='none'?`<circle cx="${cx}" cy="${cy}" r="${r*.3}" fill="#f6f5f1" stroke="none"/>`:'')}
+function trefoil(cx,cy,r){let s='';for(let i=0;i<3;i++){const a=-Math.PI/2+i*2*Math.PI/3;s+=`<circle cx="${cx+r*.45*Math.cos(a)}" cy="${cy+r*.45*Math.sin(a)}" r="${r*.45}" fill="none" stroke="#111" stroke-width="1.4"/>`}return s}
+function cross(cx,cy,h,w=null,t=null){w=w||h*.62;t=t||Math.max(2,h*.13);return `<rect x="${cx-t/2}" y="${cy-h/2}" width="${t}" height="${h}" fill="#111"/><rect x="${cx-w/2}" y="${cy-h/2+h*.28-t/2}" width="${w}" height="${t}" fill="#111"/>`}
+function crossPattee(cx,cy,r){let s='';for(let i=0;i<4;i++){s+=`<path d="M${cx} ${cy}L${cx-r*.42} ${cy-r}L${cx+r*.42} ${cy-r}Z" fill="#111" transform="rotate(${i*90} ${cx} ${cy})"/>`}return s}
+function chiRho(cx,cy,r){return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#111" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="${r-5}" fill="none" stroke="#111" stroke-width="1"/>
+<line x1="${cx-r*.55}" y1="${cy-r*.55}" x2="${cx+r*.55}" y2="${cy+r*.55}" stroke="#111" stroke-width="3"/><line x1="${cx+r*.55}" y1="${cy-r*.55}" x2="${cx-r*.55}" y2="${cy+r*.55}" stroke="#111" stroke-width="3"/>
+<line x1="${cx}" y1="${cy-r*.72}" x2="${cx}" y2="${cy+r*.72}" stroke="#111" stroke-width="3"/><path d="M${cx} ${cy-r*.72}h${r*.2}a${r*.2} ${r*.2} 0 0 1 0 ${r*.42}h-${r*.2}" fill="none" stroke="#111" stroke-width="3"/>`}
+function diamond(cx,cy,r,fill){return `<path d="M${cx} ${cy-r}L${cx+r} ${cy}L${cx} ${cy+r}L${cx-r} ${cy}Z" fill="${fill?'#111':'#f6f5f1'}" stroke="#111" stroke-width="1.5"/>`}
+function sun(cx,cy,r){let s=`<circle cx="${cx}" cy="${cy}" r="${r*.5}" fill="#111"/>`;for(let i=0;i<12;i++){const a=i*Math.PI/6;s+=`<line x1="${cx+r*.68*Math.cos(a)}" y1="${cy+r*.68*Math.sin(a)}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#111" stroke-width="2"/>`}return s}
+function hourArc(cx,cy,rx,ry,now,labels=false){let s=`<path d="M${cx-rx} ${cy}A${rx} ${ry} 0 0 1 ${cx+rx} ${cy}" fill="none" stroke="#111" stroke-width="1" stroke-dasharray="2 4"/>`;
+  for(let i=0;i<8;i++){const x=cx-rx+i*2*rx/7,u=(x-cx)/rx,y=cy-ry*Math.sqrt(Math.max(0,1-u*u));s+=i===now?sun(x,y,13):diamond(x,y,6,i<now);
+   if(labels)s+=`<text x="${x}" y="${y+(i===now?30:22)}" font-family="Cinzel" font-size="10" text-anchor="middle" fill="#111">${HOURS[i][0].slice(0,i===7?6:5).toUpperCase()}</text>`}return s}
+function rule(y,x0=30,x1=498,double=false){return `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#111" stroke-width="2"/>`+(double?`<line x1="${x0}" y1="${y+5}" x2="${x1}" y2="${y+5}" stroke="#111" stroke-width="1"/>`:'')}
+
+// ---------- button hints ----------
+const HINT_SETS={
+ latin:{name:'I · Verba (Latin words)',desc:'Roman inscriptional capitals in small round-arched niches, like an arcade of four bays. REDI (go back) · ELIGE (choose) · SVRSVM (up) · DEORSVM (down). It looks good, but the words need learning. The quick-start card would translate them.'},
+ signs:{name:'II · Signa (signs)',desc:'No words. Each button gets one liturgical mark in a pointed niche: an open doorway (back), a cross (open), and rubric triangles (up and down). Universal and quiet, and it reads well at 10 pt.'},
+ rubric:{name:'III · Rubrica (rubric line)',desc:'No boxes. Plain English small capitals sit on a double rule, separated by fleurons, like the rubric line along the foot of an altar card. BACK ❦ OPEN ❦ ▲ ❦ ▼. The clearest for parishioners.'}};
+function hintSVG(kind,labels=['back','open','up','down']){
+  const y0=H-HINT_H;let s='';
+  if(kind==='latin'||kind==='arch'){const L=kind==='arch'?{back:'BACK',open:'OPEN',up:'UP',down:'DOWN',prev:'PREV',next:'NEXT'}:{back:'REDI',open:'ELIGE',up:'SVRSVM',down:'DEORSVM',prev:'ANTE',next:'POST'};
+    s+=`<line x1="20" y1="${H-2}" x2="${W-20}" y2="${H-2}" stroke="#111" stroke-width="2"/>`;
+    labels.forEach((l,i)=>{if(!l)return;const x=HINT_X[i],r=HINT_W/2-2;
+      s+=`<path d="M${x+2} ${H-2}V${y0+16}A${r} 16 0 0 1 ${x+HINT_W-2} ${y0+16}V${H-2}" fill="#f6f5f1" stroke="#111" stroke-width="1.6"/>`;
+      s+=`<text x="${x+HINT_W/2}" y="${H-11}" font-family="Cinzel" font-weight="600" font-size="13" letter-spacing="1.6" text-anchor="middle" fill="#111">${L[l]}</text>`});}
+  if(kind==='signs'){s+=`<line x1="20" y1="${H-2}" x2="${W-20}" y2="${H-2}" stroke="#111" stroke-width="2"/>`;
+    labels.forEach((l,i)=>{if(!l)return;const x=HINT_X[i],cx=x+HINT_W/2,cy=H-17;
+      s+=lancet(x+20,x+HINT_W-20,H-2,y0+1,1.6);
+      if(l==='back')s+=`<path d="M${cx-8} ${H-4}V${cy-2}A8 8 0 0 1 ${cx+8} ${cy-2}V${H-4}" fill="none" stroke="#111" stroke-width="2"/><path d="M${cx+4} ${cy+3}h-10m4 -4l-4 4l4 4" fill="none" stroke="#111" stroke-width="2"/>`;
+      if(l==='open')s+=cross(cx,cy,22,15,3.5);
+      if(l==='up')s+=`<path d="M${cx} ${cy-9}L${cx+9} ${cy+6}H${cx-9}Z" fill="#111"/>`;
+      if(l==='down')s+=`<path d="M${cx} ${cy+9}L${cx+9} ${cy-6}H${cx-9}Z" fill="#111"/>`;
+      if(l==='prev')s+=`<path d="M${cx-9} ${cy}L${cx+6} ${cy-9}V${cy+9}Z" fill="#111"/>`;
+      if(l==='next')s+=`<path d="M${cx+9} ${cy}L${cx-6} ${cy-9}V${cy+9}Z" fill="#111"/>`;});}
+  if(kind==='rubric'){const L={back:'BACK',open:'OPEN',up:'▲',down:'▼',prev:'◀',next:'▶'};
+    s+=`<line x1="24" y1="${y0+4}" x2="${W-24}" y2="${y0+4}" stroke="#111" stroke-width="1"/><line x1="24" y1="${y0+8}" x2="${W-24}" y2="${y0+8}" stroke="#111" stroke-width="2"/>`;
+    labels.forEach((l,i)=>{if(!l)return;const x=HINT_X[i]+HINT_W/2;
+      s+=`<text x="${x}" y="${H-10}" font-family="Cormorant SC" font-weight="600" font-size="${L[l].length>1?19:16}" letter-spacing="2" text-anchor="middle" fill="#111">${L[l]}</text>`;
+      if(i<3)s+=`<text x="${(HINT_X[i]+HINT_W+HINT_X[i+1])/2}" y="${H-10}" font-family="EB Garamond" font-size="18" text-anchor="middle" fill="#111">❦</text>`});}
+  if(kind==='stock'){labels.forEach((l,i)=>{const L={back:'Back',open:'Select',up:'Up',down:'Down'};const x=HINT_X[i];
+      s+=`<rect x="${x}" y="${y0}" width="${HINT_W}" height="${HINT_H}" fill="#f6f5f1" stroke="#111"/><text x="${x+HINT_W/2}" y="${H-14}" font-family="system-ui" font-size="14" text-anchor="middle">${L[l]}</text>`});}
+  return s}
+
+// ---------- screens per treatment ----------
+const T={
+ A:{name:'A · Claustrum',hint:'latin'},
+ B:{name:'B · Chorus',hint:'arch'},
+ C:{name:'C · Tabula altaris',hint:'rubric'}};
+
+function frame(t){ // edge ornament for menu screens
+  if(t==='A')return arcade(0,W,0,26,12)+column(14,40,H-60,8)+column(W-14,40,H-60,8);
+  if(t==='B'){let s='';for(let i=0;i<9;i++)s+=quatrefoil(30+i*58.5,16,11);return s+rule(34,10,W-10,true)}
+  if(t==='C')return `<rect x="10" y="10" width="${W-20}" height="${H-20}" fill="none" stroke="#111" stroke-width="3"/><rect x="18" y="18" width="${W-36}" height="${H-36}" fill="none" stroke="#111" stroke-width="1"/>`+[[18,18],[W-18,18],[18,H-18],[W-18,H-18]].map(([x,y])=>`<rect x="${x-9}" y="${y-9}" width="18" height="18" fill="#f6f5f1"/>`+crossPattee(x,y,8)).join('');
+}
+function feastHeader(t,y){
+  if(t==='A')return `${svg(W,240,roundArch(104,424,170,240,14)+column(94,170,236,12)+column(434,170,236,12)+cross(264,62,34))}
+   <div class="abs" style="top:${y+92}px;text-align:center"><div class="rub">${DAY.dateLa.toUpperCase()}</div><div style="font-size:31px;line-height:1.08;margin-top:8px">${DAY.la}<br>${DAY.la2}</div><div class="sc" style="font-size:17px;margin-top:6px">${DAY.cls} · ${DAY.color}</div></div>`;
+  if(t==='B')return `${svg(W,190,lancet(210,318,178,58,2.4)+lancet(220,308,178,72,1)+trefoil(264,126,22)+`<line x1="196" y1="178" x2="332" y2="178" stroke="#111" stroke-width="2"/>`)}
+   <div class="abs" style="top:${y+194}px;text-align:center"><div class="rub" style="font-size:12px">${DAY.dateLa.toUpperCase()}</div><div style="font-size:29px;line-height:1.08;margin-top:8px">${DAY.la}<br>${DAY.la2}</div></div>`;
+  if(t==='C')return `${svg(W,200,chiRho(264,76,40))}<div class="abs" style="top:${y+130}px;text-align:center"><div class="rub">${DAY.dateLa.toUpperCase()} · ${DAY.yearLa}</div><div style="font-size:32px;line-height:1.08;margin-top:8px"><span style="font-family:UnifrakturMaguntia;font-size:42px">S</span>s. Simonis et Judæ</div><div style="font-size:20px;font-style:italic">Apostolorum · ${DAY.cls}</div></div>`;
+}
+function markFor(t,i){if(t==='A')return svg(22,26,`<path d="M2 26V11A9 9 0 0 1 20 11V26" fill="none" stroke="currentColor" stroke-width="2"/>`);if(t==='B')return svg(22,22,quatrefoil(11,11,10).replaceAll('#111','currentColor').replace('#f6f5f1','transparent'));return svg(20,20,crossPattee(10,10,9).replaceAll('#111','currentColor'))}
+function list(t,items,top,sel=0){return `<div class="abs" style="top:${top}px;left:${t==='A'?28:t==='C'?28:16}px;right:${t==='A'?28:t==='C'?28:16}px">`+items.map((it,i)=>`<div class="item${i===sel?' sel':''}">${markFor(t,i)}<div><div class="t">${it[0]}</div>${it[1]?`<div class="s">${it[1]}</div>`:''}</div></div>`).join('')+`</div>`}
+
+function screenToday(t,hint){hint=hint||T[t].hint;
+  const items=[['Missa hodierna','Today’s Mass · Introit'],['Vesperæ','Vespers · the Hour now'],['Continue','Epistle · Ephesians 4'],['Plura','Other days · Hours · Order of Mass']];
+  return `${svg(W,H,frame(t)+hintSVG(hint),'position:absolute;inset:0')}${feastHeader(t,0)}${list(t,items,t==='C'?330:t==='B'?316:300)}`}
+function screenReader(t){
+  const head=t==='A'?svg(W,64,arcade(30,498,8,30,9)+`<rect x="186" y="6" width="156" height="40" fill="#f6f5f1"/>`)+`<div class="abs cap" style="top:16px;text-align:center;font-size:15px">INTROITUS</div>`
+   :t==='B'?svg(W,64,quatrefoil(150,30,12)+quatrefoil(378,30,12)+rule(56,30,498))+`<div class="abs cap" style="top:20px;text-align:center;font-size:15px">INTROITUS</div>`
+   :svg(W,64,rule(52,30,498,true)+cross(40,30,18)+cross(488,30,18))+`<div class="abs cap" style="top:20px;text-align:center;font-size:15px">INTROITUS · <span style="font-family:EB Garamond;font-style:italic;letter-spacing:0;text-transform:none;font-size:17px">Introit</span></div>`;
+  const initial=t==='C'?`<span style="float:left;font-family:UnifrakturMaguntia;font-size:66px;line-height:.82;margin:4px 8px 0 0">M</span>`:t==='A'?`<span style="float:left;font-family:Cinzel;font-size:56px;line-height:.86;margin:4px 8px 0 0;border:2px solid #111;padding:2px 6px 4px">M</span>`:`<span style="float:left;font-family:Cinzel;font-size:58px;line-height:.86;margin:4px 8px 0 0">M</span>`;
+  return `${head}<div class="abs" style="top:78px;left:34px;right:34px">
+  <div class="rub" style="font-size:12px;margin-bottom:6px">PS. 138 : 17</div>
+  <p class="lat" style="margin:0">${initial}ihi autem nimis honoráti sunt amíci tui, Deus: nimis confortátus est principátus eórum.</p>
+  <p class="eng" style="margin:8px 0 0">To me, Your friends, O God, are made exceedingly honorable; their principality is exceedingly strengthened.</p>
+  <div class="rub" style="font-size:12px;margin:16px 0 6px">PS. 138 : 1–2</div>
+  <p class="lat" style="margin:0">Dómine, probásti me et cognovísti me: tu cognovísti sessiónem meam et resurrectiónem meam.</p>
+  <p class="eng" style="margin:8px 0 0">O Lord, You have probed me and You know me; You know when I sit and when I stand.</p>
+  <p class="lat" style="margin:14px 0 0">℣. Glória Patri, et Fílio, et Spirítui Sancto.</p>
+  <p class="lat" style="margin:4px 0 0">℟. Sicut erat in princípio, et nunc, et semper, et in sǽcula sæculórum. Amen.</p>
+  </div>
+  <div class="abs" style="bottom:12px;text-align:center;font-size:15px;font-style:italic">Missa · Ss. Simonis et Judæ <span style="font-style:normal">·</span> 3 / 24</div>`}
+function screenHours(t){
+  const items=HOURS.map((h,i)=>[h[0],h[1]+(i===NOW?' · now':'')]);
+  const arc=svg(W,150,hourArc(264,120,214,80,NOW,t!=='B')+(t==='A'?roundArch(40,488,140,150,0,false,1).replace(/V150/g,'V150'):''));
+  return `${svg(W,H,frame(t)+hintSVG(T[t].hint),'position:absolute;inset:0')}<div class="abs" style="top:${t==='C'?30:38}px">${arc}</div>
+   <div class="abs cap" style="top:${t==='C'?190:196}px;text-align:center;font-size:19px">HORÆ CANONICÆ</div>
+   <div class="abs" style="top:${t==='C'?220:226}px;left:0;right:0">${HOURS.map((h,i)=>`<div class="item${i===NOW?' sel':''}" style="padding:7px ${t==='B'?36:46}px;justify-content:space-between"><span class="t" style="font-size:22px">${h[0]}</span><span class="s" style="margin:0">${h[1]}${i===NOW?' · now':''}</span></div>`).join('')}</div>`}
+function screenOrdo(t){
+  const steps=[['s','MISSA CATECHUMENORUM'],['o','Ad pedes altaris','kneel'],['p','Introitus','kneel'],['o','Kyrie · Gloria',''],['p','Oratio','kneel'],['p','Epistola','sit'],['p','Graduale · Alleluia','sit'],['p','Evangelium','stand'],['o','Credo','stand'],['s','MISSA FIDELIUM'],['p','Offertorium','sit'],['o','Lavabo · Orate fratres',''],['p','Secreta','kneel'],['o','Præfatio · Sanctus','kneel'],['o','Canon Missæ','kneel']];
+  const mark=(k,cur)=>k==='p'?(t==='A'?svg(18,22,`<path d="M2 22V9A7 7 0 0 1 16 9V22Z" fill="#111"/>`):t==='B'?svg(18,18,quatrefoil(9,9,8,'#111',1)):svg(18,18,crossPattee(9,9,8))):(t==='A'?svg(18,22,`<path d="M2 22V9A7 7 0 0 1 16 9V22Z" fill="none" stroke="#111" stroke-width="1.6"/>`):t==='B'?svg(18,18,quatrefoil(9,9,8,'none',1.2)):svg(18,18,`<circle cx="9" cy="9" r="6" fill="none" stroke="#111" stroke-width="1.6"/>`));
+  return `${svg(W,H,frame(t)+hintSVG(T[t].hint),'position:absolute;inset:0')}
+  <div class="abs cap" style="top:${t==='A'?44:t==='B'?50:36}px;text-align:center;font-size:20px">ORDO MISSÆ</div>
+  <div class="abs" style="top:${t==='A'?72:t==='B'?78:64}px;text-align:center;font-size:16px;font-style:italic">Ss. Simonis et Judæ · ${DAY.cls}</div>
+  <div class="abs" style="top:${t==='A'?104:110}px;left:36px;right:36px">${steps.map(([k,l,p],i)=>k==='s'?`<div class="rub" style="font-size:11px;text-align:center;margin:10px 0 4px;border-bottom:1px solid #111;padding-bottom:4px">${l}</div>`:`<div style="display:flex;align-items:center;gap:12px;padding:5px 8px;${i===5?'background:#111;color:#f6f5f1':''}">${i===5?mark(k).replaceAll('#111','#f6f5f1'):mark(k)}<span style="font-size:20px;flex:1">${l}</span><span style="font-size:14px;font-style:italic">${p||''}</span></div>`).join('')}</div>`}
+function screenSettings(t){
+  return `${svg(W,H,frame(t)+hintSVG(T[t].hint),'position:absolute;inset:0')}
+  <div class="abs" style="top:${t==='C'?60:70}px;text-align:center">${svg(W,70,t==='A'?roundArch(234,294,50,70,6,false):t==='B'?quatrefoil(264,36,26):chiRho(264,36,28))}<div class="cap" style="font-size:20px;margin-top:10px">INSTRUMENTA</div><div style="font-size:16px;font-style:italic">Settings</div></div>
+  ${list(t,[['Text size','Medium · Aa'],['Wi-Fi','Not connected · join a network'],['About Tabula','Version, credits, parish']],250)}
+  <div class="abs" style="top:560px;left:60px;right:60px;text-align:center;font-size:16px;font-style:italic;color:#333">Wi-Fi is only needed to receive new days. The card holds every day through Oct 2027.</div>`}
+
+// Sleep screensavers derive from the back-sticker takes (docs/tabula/brand/sticker-takes):
+// rounded double frame, plain Latin cross, tracked TABULA, MISSALE · BREVIARIVM, Acutis mark.
+function stickerFrame(fg,bg,inset=14){return `<rect x="${inset}" y="${inset}" width="${W-2*inset}" height="${H-2*inset}" rx="30" fill="none" stroke="${fg}" stroke-width="2.5"/><rect x="${inset+9}" y="${inset+9}" width="${W-2*inset-18}" height="${H-2*inset-18}" rx="22" fill="none" stroke="${fg}" stroke-width="1.2"/>`}
+function latinCross(cx,top,fg,h=66){const t=h*.12;return `<rect x="${cx-t/2}" y="${top}" width="${t}" height="${h}" fill="${fg}"/><rect x="${cx-h*.3}" y="${top+h*.26}" width="${h*.6}" height="${t}" fill="${fg}"/>`}
+function rays(cx,cy,fg){let s='';[[0,-1,26],[-.7,-.55,18],[.7,-.55,18],[-1,.08,20],[1,.08,20]].forEach(([dx,dy,l])=>{s+=`<line x1="${cx+dx*14}" y1="${cy+dy*14}" x2="${cx+dx*(14+l)}" y2="${cy+dy*(14+l)}" stroke="${fg}" stroke-width="4" stroke-linecap="round"/>`});return s}
+const MARK=(light)=>`<img src="img/${light?'ai-mark-light':'ai-mark'}.png" alt="" style="width:38px;height:auto;vertical-align:middle;${light?'':'filter:grayscale(1) contrast(3)'}">`;
+function screenSleepPointed(){ // Chorus tablet with a two-centred pointed head
+  const L=48,R=480,spring=372,r=324,c=r-(R-L)/2,apexY=spring-Math.sqrt(r*r-c*c);
+  const head=(l,rr,sp,rad,bot,inset)=>{const cc=rad-(rr-l)/2,ay=sp-Math.sqrt(rad*rad-cc*cc);return `M${l} ${bot}V${sp}A${rad} ${rad} 0 0 1 ${(l+rr)/2} ${ay}A${rad} ${rad} 0 0 1 ${rr} ${sp}V${bot}Z`};
+  return svg(W,H,`<rect width="${W}" height="${H}" fill="#111"/>${stickerFrame('#f6f5f1')}
+    <path d="${head(L,R,spring,r,628)}" fill="#f6f5f1"/><path d="${head(L+10,R-10,spring+4,r-10,618)}" fill="none" stroke="#111" stroke-width="1.5"/>
+    ${latinCross(264,122,'#111',58)}<line x1="204" y1="300" x2="324" y2="300" stroke="#111" stroke-width="2"/>${hourArc(264,566,150,30,NOW)}`)+
+    `<div class="abs" style="top:222px;text-align:center"><div class="cap" style="font-size:52px;font-weight:700;letter-spacing:.1em;line-height:1">TABULA</div>
+     <div class="cap" style="font-size:15px;margin-top:40px;letter-spacing:.24em">MISSALE · BREVIARIVM</div>
+     <div style="font-size:28px;margin-top:26px;line-height:1.12">${DAY.la}<br>${DAY.la2}</div>
+     <div class="cap" style="font-size:12px;letter-spacing:.22em;margin-top:12px">${DAY.dateLa.toUpperCase()}</div>
+     <div class="cap" style="font-size:12px;letter-spacing:.22em;margin-top:30px">AD VESPERAS</div></div>
+     <div class="abs" style="bottom:62px;text-align:center;color:#f6f5f1">${MARK(true)} <span style="font-size:18px;font-style:italic;margin-left:6px">Acutis Ignatius</span></div>`}
+function screenSleep(t){
+  if(t==='A'){ // 2b Roman inscriptional (the chosen sticker), inverted for e-ink
+    return svg(W,H,`<rect width="${W}" height="${H}" fill="#111"/>${stickerFrame('#f6f5f1')}${latinCross(264,96,'#f6f5f1',72)}`)+
+    `<div class="abs" style="top:206px;text-align:center;color:#f6f5f1"><div class="cap" style="font-size:66px;font-weight:700;letter-spacing:.09em;line-height:1">TABULA</div>
+     <div class="cap" style="font-size:17px;margin-top:24px;letter-spacing:.26em">MISSALE · BREVIARIVM</div>
+     <div style="font-size:27px;font-style:italic;margin-top:40px;line-height:1.3">Introíbo ad altáre Dei,<br>ad Deum qui lætíficat<br>iuventútem meam.</div>
+     <div class="cap" style="font-size:13px;letter-spacing:.24em;margin-top:44px">${DAY.dateLa.toUpperCase()}<br><span style="display:inline-block;margin-top:6px">ANNO DOMINI ${DAY.yearLa}</span></div></div>
+     <div class="abs" style="bottom:52px;text-align:center;color:#f6f5f1">${MARK(true)} <span style="font-size:18px;font-style:italic;margin-left:6px">Acutis Ignatius</span>
+     <div class="cap" style="font-size:11px;letter-spacing:.24em;margin-top:8px;opacity:.85">ACUTISIGNATIUS.COM/TABULA</div></div>`;}
+  if(t==='B'){ // Inscribed tablet: an arched tablet on a dark field
+    return svg(W,H,`<rect width="${W}" height="${H}" fill="#111"/>${stickerFrame('#f6f5f1')}
+    <path d="M48 620V250A216 216 0 0 1 480 250V620Q480 628 472 628H56Q48 628 48 620Z" fill="#f6f5f1" stroke="#f6f5f1"/>
+    <path d="M58 612V252A206 206 0 0 1 470 252V612Q470 618 464 618H64Q58 618 58 612Z" fill="none" stroke="#111" stroke-width="1.5"/>
+    ${latinCross(264,94,'#111',64)}<line x1="204" y1="272" x2="324" y2="272" stroke="#111" stroke-width="2"/>${hourArc(264,566,150,30,NOW)}`)+
+    `<div class="abs" style="top:192px;text-align:center"><div class="cap" style="font-size:58px;font-weight:700;letter-spacing:.1em;line-height:1">TABULA</div>
+     <div class="cap" style="font-size:15px;margin-top:40px;letter-spacing:.24em">MISSALE · BREVIARIVM</div>
+     <div style="font-size:30px;margin-top:34px;line-height:1.12">${DAY.la}<br>${DAY.la2}</div>
+     <div class="cap" style="font-size:12px;letter-spacing:.22em;margin-top:14px">${DAY.dateLa.toUpperCase()}</div>
+     <div class="cap" style="font-size:12px;letter-spacing:.22em;margin-top:58px">AD VESPERAS</div></div>
+     <div class="abs" style="bottom:62px;text-align:center;color:#f6f5f1">${MARK(true)} <span style="font-size:18px;font-style:italic;margin-left:6px">Acutis Ignatius</span></div>`;}
+  if(t==='C'){ // Capitals on parchment: light ground, sunburst over the name
+    return svg(W,H,`<rect width="${W}" height="${H}" fill="#f6f5f1"/>${stickerFrame('#111')}${rays(264,150,'#111')}
+    <line x1="150" y1="566" x2="378" y2="566" stroke="#111" stroke-width="1"/><line x1="170" y1="571" x2="358" y2="571" stroke="#111" stroke-width="2"/>`)+
+    `<div class="abs" style="top:214px;text-align:center"><div class="cap" style="font-size:66px;font-weight:700;letter-spacing:.08em;line-height:1">TABULA</div>
+     <div class="cap" style="font-size:16px;margin-top:24px;letter-spacing:.24em">MISSALE · BREVIARIVM</div>
+     <div style="font-size:26px;font-style:italic;margin-top:42px;line-height:1.3">Sub tuum præsídium confúgimus,<br>sancta Dei Génitrix.</div></div>
+     <div class="abs" style="top:590px;text-align:center"><div class="cap" style="font-size:13px;letter-spacing:.22em">${DAY.dateLa.toUpperCase()} · ${DAY.yearLa}</div></div>
+     <div class="abs" style="bottom:56px;text-align:center">${MARK(false)} <span style="font-size:18px;font-style:italic;margin-left:6px">Acutis Ignatius</span></div>`;}
+}
+
+// ---------- assemble ----------
+const dev=(inner,cap,full=false)=>`<figure><div class="dev${full?' full':''}"><div class="scr">${inner}</div></div><figcaption>${cap}</figcaption></figure>`;
+function stockHome(){const rows=['Continue Reading','Today','Order of Mass','Missal','Hours','Readings','Library','Settings'];
+  return `<div class="abs" style="top:20px;left:20px;font:600 26px system-ui">Tabula</div>`+rows.map((r,i)=>`<div class="abs" style="top:${100+i*56}px;left:16px;right:16px;padding:14px 12px;font:20px system-ui;${i===1?'background:#111;color:#fff':''}">${r}</div>`).join('')+svg(W,H,hintSVG('stock'),'position:absolute;inset:0')}
+function stockFiles(){const rows=['..','2026-10-27.propers.epub','2026-10-28.full.epub','2026-10-28.propers.epub','2026-10-29.propers.epub'];
+  return `<div class="abs" style="top:20px;left:20px;font:600 22px system-ui">/Tabula/Today</div>`+rows.map((r,i)=>`<div class="abs" style="top:${90+i*50}px;left:16px;right:16px;padding:12px;font:17px ui-monospace,monospace;${i===3?'background:#111;color:#fff':''}">${r}</div>`).join('')+svg(W,H,hintSVG('stock'),'position:absolute;inset:0')}
+
+document.getElementById('flow').innerHTML=
+  dev(stockHome(),'<b>Now:</b> a CrossPoint-style list…')+`<span class="arrow">→</span>`+
+  dev(stockFiles(),'<b>Now:</b> …where every row opens a file browser.')+`<span class="arrow" style="margin:0 10px">⟹</span>`+
+  dev(screenSleep('B'),'<b>Proposed:</b> sleep screensaver')+`<span class="arrow">→</span>`+
+  dev(screenToday('B'),'<b>Wake on a new day:</b> Hodie, today’s feast and big choices')+`<span class="arrow">→</span>`+
+  dev(screenReader('B'),'<b>One press:</b> today’s Mass, at the Introit');
+
+document.getElementById('direction').innerHTML=
+  dev(screenToday('B'),'<b>Hodie</b> · Today (home)')+dev(screenReader('B'),'<b>Reading</b> · no hints')+dev(screenHours('B'),'<b>Horæ</b> · the Hour now selected')+
+  dev(screenOrdo('B'),'<b>Ordo Missæ</b> · filled quatrefoil = today\u2019s proper')+dev(screenSettings('B'),'<b>Settings</b> · three rows')+dev(screenSleep('B'),'<b>Sleep</b> · round tablet');
+document.getElementById('direction-sleep').innerHTML=dev(screenSleep('B'),'<b>Round tablet</b> · as in the Chorus row')+dev(screenSleepPointed(),'<b>Pointed tablet</b> · a lancet head to match Chorus');
+document.getElementById('treatments').innerHTML=Object.entries(T).map(([k,v])=>`<h3>${v.name}</h3><div class="row">`+
+  dev(screenToday(k),'<b>Hodie</b> · Today (home)')+dev(screenReader(k),'<b>Reading</b> · no hints, running head + page')+dev(screenHours(k),'<b>Horæ</b> · eight-Hour arc, current Hour selected')+
+  dev(screenOrdo(k),'<b>Ordo Missæ</b> · filled = today’s proper')+dev(screenSettings(k),'<b>Settings</b> · three rows')+dev(screenSleep(k),'<b>Sleep</b> · Tabula screensaver')+`</div>`).join('');
+
+document.getElementById('hints').innerHTML=Object.entries(HINT_SETS).map(([k,v])=>`<h3>${v.name}</h3><p class="note">${v.desc}</p>
+  <div class="row" style="align-items:center"><div class="hintstrip">${svg(W,52,`<g transform="translate(0 ${52-H})">${hintSVG(k)}</g>`)}</div></div>
+  <div class="row" style="margin-top:18px">${['A','B','C'].map(t=>dev(screenToday(t,k),`${v.name.split(' · ')[0]} on ${T[t].name}`)).join('')}</div>`).join('')+
+  `<h3>For comparison: stock CrossPoint</h3><div class="hintstrip">${svg(W,52,`<g transform="translate(0 ${52-H})">${hintSVG('stock')}</g>`)}</div>`;
+
+document.getElementById('sleep').innerHTML=['A','B','C'].map(t=>dev(screenSleep(t),`<b>${{A:'S1 · Inscriptional',B:'S2 · Tablet',C:'S3 · Sunburst'}[t]}</b>`+(t==='A'?' · from sticker 2b (chosen): inverted, cross, Introibo, URL':t==='B'?' · from Inscribed tablet: arched tablet, today\u2019s feast, Hour arc':' · from Capitals on parchment: sunburst, Sub tuum')+' · tap to see 1:1',false)).join('');
+
+
+// ---------- Round 2: header bars ----------
+function headerBar(kind){
+  if(kind==='quatrefoil'){let s='';for(let i=0;i<9;i++)s+=quatrefoil(30+i*58.5,16,11);return s+rule(34,10,W-10,true)}
+  if(kind==='arcade'){let s='';const n=11,x0=14,x1=W-14,bw=(x1-x0)/n;for(let i=0;i<n;i++)s+=lancet(x0+i*bw+3,x0+(i+1)*bw-3,34,6,1.4);return s+rule(34,10,W-10)+rule(39,10,W-10)}
+  if(kind==='rubric')return `<rect x="0" y="0" width="${W}" height="38" fill="#111"/>`+cross(26,19,18,12,3).replaceAll('#111','#f6f5f1')+cross(W-26,19,18,12,3).replaceAll('#111','#f6f5f1')+`<text x="${W/2}" y="25" font-family="Cinzel" font-weight="700" font-size="14" letter-spacing="3" text-anchor="middle" fill="#f6f5f1">HODIE · FERIA IV · DIE XXVIII OCTOBRIS</text>`;
+  if(kind==='rose'){let s='';for(let i=0;i<13;i++){const cx=20+i*40.6;s+=`<circle cx="${cx}" cy="18" r="13" fill="none" stroke="#111" stroke-width="1.3"/><circle cx="${cx}" cy="18" r="4" fill="#111"/>`;if(i<12)s+=diamond(cx+20.3,18,4,true)}return s+rule(38,10,W-10)}
+  if(kind==='cross')return rule(22,24,226)+rule(27,44,226)+rule(22,302,504)+rule(27,302,484)+crossPattee(264,22,15);
+  if(kind==='status')return `<text x="20" y="25" font-family="EB Garamond" font-size="17" fill="#111">5:40 pm</text><text x="${W/2}" y="26" font-family="Cinzel" font-weight="700" font-size="14" letter-spacing="3" text-anchor="middle" fill="#111">TABULA</text><rect x="${W-58}" y="12" width="30" height="14" rx="2" fill="none" stroke="#111" stroke-width="1.5"/><rect x="${W-27}" y="16" width="3" height="6" fill="#111"/><rect x="${W-55}" y="15" width="18" height="8" fill="#111"/>`+rule(38,10,W-10);
+}
+const HEADER_KINDS=[['quatrefoil','H1 · Quatrefoil band','the current one'],['arcade','H2 · Blind arcade','a row of small lancets on a double rule'],['rubric','H3 · Rubric bar','black band, the date in white capitals, crosses at the ends'],['rose','H4 · Rose roundels','roundels and diamonds, like a choir-screen frieze'],['cross','H5 · Cross on the rule','quiet: a double rule broken by a cross'],['status','H6 · Status line','the time and battery, TABULA in the middle']];
+function screenTodayBar(kind){
+  const items=[['Missa hodierna','Today’s Mass · Introit'],['Vesperæ','Vespers · the Hour now'],['Continue','Epistle · Ephesians 4'],['Plura','Order of Mass · Hours · Settings']];
+  return `${svg(W,H,headerBar(kind)+hintSVG('arch'),'position:absolute;inset:0')}${feastHeader('B',0)}${list('B',items,316)}`}
+
+// ---------- Round 2: postures ----------
+// Figures face right; strokes are 3 px with round ends so they survive 1-bit.
+function posture(kind,ink='#111'){
+  const st=`stroke="${ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"`;
+  if(kind==='stand')return `<circle cx="12" cy="4.5" r="3" fill="${ink}"/><path d="M12 9V16M12 16L9.5 23M12 16L14.5 23M12 10.5L9 15.5M12 10.5L15 15.5" ${st}/>`;
+  if(kind==='kneel')return `<circle cx="13" cy="4.5" r="3" fill="${ink}"/><path d="M13 9V20L5 21.5M13 11.5L17.5 9" ${st}/>`;
+  if(kind==='sit')return `<circle cx="9" cy="4.5" r="3" fill="${ink}"/><path d="M9 9V15.5H16V22.5M9 11.5L13 14" ${st}/><path d="M4 12V23" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`;
+  return '';
+}
+const pIcon=(k,ink)=>svg(24,24,posture(k,ink));
+const ORDO=[['s','MISSA CATECHUMENORUM'],['o','Ad pedes altaris','Prayers at the Foot of the Altar','kneel'],['p','Introitus','Introit','kneel'],['o','Kyrie · Gloria','Lord, have mercy · Glory to God','kneel'],['p','Oratio','Collect','kneel'],['p','Epistola','Epistle','sit'],['p','Graduale · Alleluia','Gradual','sit'],['p','Evangelium','Gospel','stand'],['o','Credo','Creed','stand'],['s','MISSA FIDELIUM'],['p','Offertorium','Offertory','sit'],['o','Lavabo · Orate fratres','Washing of Hands','sit'],['p','Secreta','Secret','kneel']];
+const PEN={kneel:'kneel',sit:'sit',stand:'stand'};
+function ordoFrame(){return svg(W,H,headerBar('quatrefoil')+hintSVG('arch'),'position:absolute;inset:0')+`<div class="abs cap" style="top:52px;text-align:center;font-size:20px">ORDO MISSÆ</div><div class="abs" style="top:80px;text-align:center;font-size:16px;font-style:italic">Ss. Simonis et Judæ · II. classis</div>`}
+const qmark=(k,inv)=>svg(18,18,quatrefoil(9,9,8,k==='p'?'#111':'none',k==='p'?1:1.2).replaceAll('#111',inv?'#f6f5f1':'#111').replace('#f6f5f1"','transparent"'));
+function screenPostureA(){ // figure at the right of each row
+  return ordoFrame()+`<div class="abs" style="top:110px;left:30px;right:30px">`+ORDO.map(([k,la,en,p],i)=>k==='s'?`<div class="rub" style="font-size:11px;text-align:center;margin:8px 0 2px;border-bottom:1px solid #111;padding-bottom:4px">${la}</div>`:
+    `<div style="display:flex;align-items:center;gap:12px;padding:3px 8px;${i===5?'background:#111;color:#f6f5f1':''}">${qmark(k,i===5)}<span style="font-size:20px;flex:1">${la}</span>${pIcon(p,i===5?'#f6f5f1':'#111')}<span style="font-size:13px;font-style:italic;width:38px">${p}</span></div>`).join('')+`</div>`}
+function screenPostureB(){ // posture changes as dividers; rows carry no figure
+  let last='',out='';
+  ORDO.forEach(([k,la,en,p],i)=>{if(k==='s'){out+=`<div class="rub" style="font-size:11px;text-align:center;margin:10px 0 0">${la}</div>`;return}
+    if(p!==last){out+=`<div style="display:flex;align-items:center;gap:8px;margin:8px 0 2px"><div style="flex:1;border-top:1px solid #111"></div>${pIcon(p)}<span class="cap" style="font-size:12px">${p.toUpperCase()}</span><div style="flex:1;border-top:1px solid #111"></div></div>`;last=p}
+    out+=`<div style="display:flex;align-items:center;gap:12px;padding:2px 8px;${i===5?'background:#111;color:#f6f5f1':''}">${qmark(k,i===5)}<span style="font-size:19px;flex:1">${la}</span></div>`});
+  return ordoFrame()+`<div class="abs" style="top:104px;left:30px;right:30px">${out}</div>`}
+function screenPostureC(){ // one step at a time, large: where we are and what to do
+  return svg(W,H,headerBar('quatrefoil')+hintSVG('arch')+lancet(194,334,300,70,2.4)+lancet(206,322,300,86,1),'position:absolute;inset:0')+
+   `<div class="abs" style="top:150px;text-align:center">${svg(W,120,`<g transform="translate(222 4) scale(3.5)">${posture('sit')}</g>`)}</div>
+   <div class="abs cap" style="top:318px;text-align:center;font-size:15px;letter-spacing:.24em">SEDETE · SIT</div>
+   <div class="abs" style="top:350px;text-align:center;font-size:34px">Epistola</div>
+   <div class="abs" style="top:394px;text-align:center;font-size:18px;font-style:italic">Epistle · Ephesians 4 : 7–13</div>
+   <div class="abs" style="top:446px;left:60px;right:60px;border-top:1px solid #111"></div>
+   <div class="abs" style="top:462px;text-align:center;font-size:17px">Next: <i>Graduale · Alleluia</i> · sit<br>then <i>Evangelium</i> · <b>stand</b></div>
+   <div class="abs" style="top:540px;left:0;right:0">${svg(W,40,(()=>{let g='';const n=22;for(let i=0;i<n;i++){const x=44+i*(440/(n-1));g+=i===5?`<circle cx="${x}" cy="20" r="7" fill="#111"/>`:diamond(x,20,4,i<5)}return g})())}</div>
+   <div class="abs" style="top:584px;text-align:center;font-size:14px;font-style:italic">6 of 22 · OPEN reads the text</div>`}
+
+document.getElementById('headers').innerHTML=HEADER_KINDS.map(([k,n,d])=>dev(screenTodayBar(k),`<b>${n}</b> · ${d}`)).join('');
+document.getElementById('postures').innerHTML=dev(screenPostureA(),'<b>P1 · Figure per row</b> · posture at the right of every part')+dev(screenPostureB(),'<b>P2 · Posture dividers</b> · a rule with the figure wherever the posture changes')+dev(screenPostureC(),'<b>P3 · Follow along</b> · one part at a time, large posture, what comes next');
+document.getElementById('posture-legend').innerHTML=['kneel','stand','sit'].map(k=>`<div style="display:flex;align-items:center;gap:8px;background:#f6f5f1;color:#111;padding:8px 14px;border-radius:8px">${svg(48,48,`<g transform="scale(2)">${posture(k)}</g>`)}<span style="font:600 15px Cinzel,serif">${k.toUpperCase()}</span></div>`).join('');
+
+
+// ---------- Round 3: sleep, uniform light or dark ----------
+// Light-native; dark is the same drawing inverted (no mixed fields).
+function feastBlock(top,size=28){return `<div style="font-size:${size}px;line-height:1.12">${DAY.la}<br>${DAY.la2}</div><div class="cap" style="font-size:12px;letter-spacing:.22em;margin-top:12px">${DAY.dateLa.toUpperCase()}</div>`}
+const ARC=(cy=600)=>hourArc(264,cy,150,30,NOW);
+const MARKROW=(b=62)=>`<div class="abs" style="bottom:${b}px;text-align:center">${MARK(false)} <span style="font-size:18px;font-style:italic;margin-left:6px">Acutis Ignatius</span></div>`;
+const SLEEP3={
+ inscr:['Inscriptional','the chosen back sticker, line for line',()=>svg(W,H,`<rect width="${W}" height="${H}" fill="#f6f5f1"/>${stickerFrame('#111')}${latinCross(264,92,'#111',68)}${rule(286,204,324)}${ARC()}`)+
+   `<div class="abs" style="top:196px;text-align:center"><div class="cap" style="font-size:62px;font-weight:700;letter-spacing:.09em;line-height:1">TABULA</div>
+    <div class="cap" style="font-size:16px;margin-top:44px;letter-spacing:.24em">MISSALE · BREVIARIVM</div><div style="margin-top:40px">${feastBlock()}</div></div>${MARKROW()}`],
+ sun:['Sunburst','capitals on parchment, rays over the name',()=>svg(W,H,`<rect width="${W}" height="${H}" fill="#f6f5f1"/>${stickerFrame('#111')}${rays(264,150,'#111')}${rule(322,150,378)}${rule(327,170,358)}${ARC()}`)+
+   `<div class="abs" style="top:204px;text-align:center"><div class="cap" style="font-size:62px;font-weight:700;letter-spacing:.08em;line-height:1">TABULA</div>
+    <div class="cap" style="font-size:15px;margin-top:20px;letter-spacing:.24em">MISSALE · BREVIARIVM</div>
+    <div style="margin-top:62px">${feastBlock()}</div></div>${MARKROW()}`],
+ altar:['Altar card','ruled frame, corner crosses, Chi-Rho, blackletter',()=>svg(W,H,`<rect width="${W}" height="${H}" fill="#f6f5f1"/>`+frame('C')+`<rect x="34" y="34" width="${W-68}" height="${H-68}" fill="none" stroke="#111" stroke-width="1"/>${chiRho(264,132,50)}${rule(250,90,438,true)}${rule(530,90,438,true)}${ARC()}`)+
+   `<div class="abs" style="top:268px;text-align:center"><div style="font-family:UnifrakturMaguntia;font-size:68px;line-height:1">Tabula</div>
+    <div class="cap" style="font-size:13px;margin-top:12px;letter-spacing:.24em">MISSALE ROMANUM · BREVIARIUM ROMANUM</div>
+    <div style="margin-top:28px">${feastBlock(0,26)}</div></div>${MARKROW(66)}`],
+ cloister:['Cloister','round arch on columns, arcade top and foot',()=>svg(W,H,`<rect width="${W}" height="${H}" fill="#f6f5f1"/>${arcade(0,W,0,34,8)}${roundArch(78,450,300,640,18)}${column(68,300,632,14)}${column(460,300,632,14)}${arcade(0,W,H-44,44,6)}${crossPattee(264,172,26)}${ARC(600)}`)+
+   `<div class="abs" style="top:226px;text-align:center"><div class="cap" style="font-size:54px;font-weight:700;letter-spacing:.12em;line-height:1">TABULA</div>
+    <div class="cap" style="font-size:14px;margin-top:18px;letter-spacing:.26em">MISSALE · BREVIARIVM</div>
+    <div style="margin-top:46px">${feastBlock(0,26)}</div></div>
+    <div class="abs" style="bottom:62px;text-align:center">${MARK(false)}</div>`],
+ uncial:['Uncial','Irish uncial name, a gentler hand',()=>svg(W,H,`<rect width="${W}" height="${H}" fill="#f6f5f1"/>${stickerFrame('#111')}${latinCross(264,96,'#111',60)}${ARC()}`)+
+   `<div class="abs" style="top:190px;text-align:center"><div style="font-family:'Uncial Antiqua';font-size:80px;line-height:1">Tabula</div>
+    <div style="font-size:24px;font-style:italic;margin-top:14px">missale &amp; breviarium</div>
+    <div style="margin-top:52px">${feastBlock()}</div></div>${MARKROW()}`],
+ page:['Manuscript page','a quiet page: big initial, ruled lines, the day',()=>svg(W,H,`<rect width="${W}" height="${H}" fill="#f6f5f1"/>${rule(70,40,488)}${rule(75,40,488)}${rule(722,40,488)}${rule(727,40,488)}${ARC(600)}`)+
+   `<div class="abs" style="top:110px;left:56px;right:56px"><div style="display:flex;align-items:flex-end;gap:14px"><span style="font-family:Cinzel;font-weight:700;font-size:150px;line-height:.78">T</span><div class="cap" style="font-size:40px;font-weight:700;letter-spacing:.14em;line-height:1;padding-bottom:4px">ABULA</div></div>
+    <div class="cap" style="font-size:14px;margin-top:22px;letter-spacing:.26em">MISSALE · BREVIARIVM</div>
+    <div style="margin-top:56px;text-align:left">${feastBlock(0,30)}</div>
+    <div style="font-size:21px;font-style:italic;margin-top:30px;line-height:1.35">Mihi autem nimis honoráti sunt amíci tui, Deus.</div></div>
+    <div class="abs" style="top:740px;text-align:center">${MARK(false)}</div>`]};
+document.getElementById('sleep3').innerHTML=Object.entries(SLEEP3).map(([k,[n,d,f]])=>`<h3>${n} · <span style="text-transform:none;font-weight:400">${d}</span></h3><div class="row">`+
+  dev(f(),'<b>Light</b>')+dev(`<div style="position:absolute;inset:0;filter:invert(1)">${f()}</div>`,'<b>Dark</b> · the same drawing inverted')+`</div>`).join('');
+
+// size toggle
+document.querySelectorAll('.toolbar button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.toolbar button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  document.querySelectorAll('.dev').forEach(d=>d.style.setProperty('--z',b.dataset.z));
+  try{localStorage.setItem('tabula-z',b.dataset.z)}catch(e){}
+}));
+try{const z=localStorage.getItem('tabula-z');if(z)document.querySelector(`.toolbar button[data-z="${z}"]`)?.click()}catch(e){}
+document.querySelectorAll('#sleep .dev').forEach(d=>d.addEventListener('click',()=>d.classList.toggle('full')));
+</script>
+</body>
+</html>

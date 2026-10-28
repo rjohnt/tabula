@@ -1,0 +1,17 @@
+{
+  "updated": "2026-10-26",
+  "note": "Back-sticker treatments Ryan kept. Chosen: 2b, Roman inscriptional with acutisignatius.com/tabula under the attribution. All shortlisted takes have the Latin line and a gold double outer frame; dark takes use the light (ivory/gold) Acutis mark and a gold Latin cross.",
+  "keep": [
+    "Inscriptional.dc.html",
+    "Tablet.dc.html",
+    "ParchmentCaps.dc.html",
+    "UncialForest.dc.html",
+    "ChiRho.dc.html",
+    "Oxblood.dc.html"
+  ],
+  "chosen": "InscriptionalURL.dc.html",
+  "chosen_variants": [
+    "Inscriptional.dc.html",
+    "InscriptionalSeal.dc.html"
+  ]
+}

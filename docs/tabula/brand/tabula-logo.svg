@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <rect width="120" height="120" fill="#fff"/>
+  <g fill="none" stroke="#000" stroke-width="8" stroke-linecap="butt">
+    <!-- Rho: stem and bowl -->
+    <line x1="56" y1="8" x2="56" y2="114"/>
+    <path d="M56 12 H66 A16 16 0 0 1 66 44 H56"/>
+    <!-- Chi, below the bowl -->
+    <line x1="30" y1="58" x2="82" y2="110"/>
+    <line x1="82" y1="58" x2="30" y2="110"/>
+  </g>
+</svg>
