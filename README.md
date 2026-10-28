@@ -1,300 +1,226 @@
-# CrossPoint Reader
+# Tabula · Missale · Breviarium
 
-[![Fund contributors](https://img.shields.io/badge/%F0%9F%91%91_Fund_contributors-royalty.dev-BB953A?style=for-the-badge&labelColor=1a1a1a)](https://app.royalty.dev/crosspoint-reader/crosspoint-reader)
+**Pray as the Church has prayed for centuries.**
 
-CrossPoint is open-source e-reader firmware - community-built, fully hackable, free forever. It's maintained by a growing community of developers and readers who believe your device should do what you want - not what a manufacturer decided for you.
+Tabula is a small, quiet e-ink missal and breviary. It carries the propers of
+the Traditional Latin Mass, the Order of Mass, and the Hours of the Divine
+Office, in Latin and English, in your pocket.
 
-### Now running on:
+[acutisignatius.com/tabula](https://acutisignatius.com/tabula/) · a passion project of [Acutis Ignatius](https://acutisignatius.com)
 
-- **ESP32C3-based** Xteink X4 and X3.
-- **ESP32S3-based** Xteink X4Pro and X4Classic, Seeed reTerminal Sticky, M5PaperMono, Metalio E-Ink 4, EEGOREAD A4 and Boox Picco.
+![Tabula, front and back: the forest-green Missale · Breviarium back, and the Today screen](docs/images/tabula/site-header.jpg)
 
-Check [our Devices page](https://crosspointreader.com/devices) for the full list.
-
-![CrossPoint Reader running on Xteink device](./docs/images/cover.jpg)
-
-> If you're planning to buy an Xteink device, consider purchasing an **X3/X4 Developer Edition** through https://crosspointreader.com. CrossPoint receives a small share of each sale, helping fund development costs.
-
-## What can CrossPoint do?
-
-- **Reader engine**: EPUB 2/3 rendering with embedded-style option, image handling, hyphenation, kerning, adaptive table layouts, native CJK ruby annotations, chapter navigation, footnotes, bookmarks, dictionary lookups ([StarDict](docs/dictionary.md)), go-to-percent, auto page turn, orientation control, focus reading, KOReader progress sync and more.
-
-- **Various formats**: native handling for `.epub`, `.xtc/.xtch`, `.txt`, and `.bmp`.
-
-- **Touch reading**: follow EPUB links and look up words in the dictionary on touch-enabled devices.
-
-- **Highlights and clippings**: highlight text in EPUBs and save excerpts as clippings. Use the reader menu on button devices, or hold a word and drag the selection handles on touch devices. Look up selected words or phrases in the dictionary. Enable Sync Clippings to sync saved excerpts through a compatible CrossPoint Sync server. See [Clippings and Highlights](USER_GUIDE.md#53-clippings-and-highlights).
-
-- **Screenshots.**
-
-- **Custom fonts**: install your favorite fonts on the SD card.
-
-- **Tilt page turn (X3 and Sticky)**.
-
-- **Bluetooth page turners**: pair a remote under Settings → Connectivity → Bluetooth Page Turner. Map short and long presses to page turns, chapter navigation, the reader menu, or clipping selection.
-
-- **USB Drive mode (X4Pro)**: access the SD card as USB mass storage.
-
-- **Library workflow**: indexed title/author search, recently-added and alphabetical views, multilingual grouping, folder browser, recent books, and SD-cache management.
-
-- **Wireless workflows**:
-  
-  - File transfer web UI
-  - EPUB Optimizer
-  - Web settings UI/API (edit many device settings from browser)
-  - WebSocket fast uploads
-  - WebDAV handler
-  - AP mode (hotspot) and STA mode (join existing Wi-Fi), both with QR helpers
-  - Calibre wireless connect flow
-  - OPDS browser with saved servers (up to 8), search, pagination, and direct download
-  - OTA update checks and installs from GitHub releases
-
-- **Customization**: night mode, multiple themes (Classic, Lyra, Lyra Extended, RoundedRaff), sleep screen modes including transparent overlays, front/side button remapping, status bar controls, power-button behavior, refresh cadence, and more.
-
-- **Localization**: 34 UI languages and counting, including CJK font fallback and RTL support.
-
-- **SD card plugins**: install plugins for book catalogs, downloads, and tools in the device's web interface. Enable Plugins under Settings → Connectivity to show them on Home. On-device plugins use existing firmware screens and operations. JavaScript runs in a browser on your phone or computer, and its page must stay open while it works. Plugins follow [CrossPoint's reading-focused scope](SCOPE.md#out-of-scope). See the [plugin guide](docs/sd-plugins.md).
-
-### Coming soon:
-
-- More themes.
-
-- Much more! stay tuned.
+> *Lauds* at dawn, *Vespers* at dusk, *Compline* before sleep. The Church
+> gives each part of the day its prayer. Tabula keeps those prayers close.
 
 ---
 
-## USB-locked devices (Xteink Unlocker)
+## Quiet by design
 
-Some Xteink units purchased from third-party stores (e.g. AliExpress) ship with USB flashing locked from the factory.
-If your device is locked, you will need to use the **Xteink Unlocker** tool available at
-https://crosspointreader.com/#unlock-tool before you can flash CrossPoint.
+<img src="docs/images/tabula/screen-today.png" alt="Today: the feast of Ss. Simon and Jude, with today's Mass, the Hour now, Continue, and Plura" width="264" align="right">
 
-**You do not need this tool if you bought your device directly from xteink.com.** Those units are not locked.
+**Nothing asks for your attention.** There are no apps, feeds or
+notifications. The screen is paper-like and easy on the eyes. One button opens
+and one goes back.
 
-**Not sure if your device is locked?** Power it on, connect the USB-C cable, and try flashing via the web flasher first (see
-[Install firmware](#install-firmware) below). If the browser's serial device picker does not show your device, try a different
-USB port or browser before assuming the device is locked. Only reach for the unlocker if the device still doesn't appear.
+Today's Mass and the Hour being prayed now are always the first thing you see.
+They are there for a few quiet minutes of prayer before you leave for church.
 
-> ### ⚠️ WARNING: READ THIS BEFORE USING THE UNLOCKER ⚠️
-> 
-> **The only officially supported firmwares in the unlock tool are CrossPoint and CrossInk.**
-> 
-> Flashing any other firmware on a USB-locked device may **permanently brick the device** or leave it **permanently
-> stuck on that firmware with no recovery path**. Once USB flashing is re-locked, your only way back is via OTA, and if
-> the firmware you flashed doesn't support OTA, **there is no way out**.
+There is no file browser and no library to manage. Tabula opens on **Hodie**
+(today), with the day's feast under a Gothic lancet:
 
-## Install firmware
+- **Missa hodierna**: today's Mass
+- **The Hour now**: Lauds, Sext, Vespers or Compline, chosen by the clock
+- **Continue**: back to where you were reading
+- **Plura**: the Order of Mass, all eight Hours, and a short Settings list
 
-### Web installer (recommended)
+The arched labels under the screen name what each front button does,
+including while you read.
 
-1. Connect your device to your computer via USB-C and wake/unlock the device
-2. Go to https://crosspointreader.com/#flash-tools, select your device (X3, X4, Xteink X4Pro, Seeed reTerminal Sticky, or M5PaperMono), and choose an official CrossPoint release.
+<br clear="right">
 
-### Web installer (specific version)
+## Proprium de Tempore: know what's coming
 
-1. Connect your device to your computer via USB-C and wake/unlock the device
-2. Download the firmware file for your device from [Releases](https://github.com/crosspoint-reader/crosspoint-reader/releases), or compile yourself.
-3. Go to https://crosspointreader.com/#flash-tools, select your device, click "Custom .bin" and upload the firmware file.
+The propers of each day's Mass arrive on their own: Introit, Collect,
+Epistle, Gradual, Gospel, Offertory and Communion. Pray with them at home
+before Mass, and you'll arrive already knowing what will be prayed.
 
-### Revert to Official Firmware
+Read just the propers, or the whole Mass straight through. Each Latin line has
+its English directly beneath, set close together, in regular and italic type.
+The gap falls between pairs, never inside one.
 
-To revert to the official firmware, you can also flash the latest official firmware using https://crosspointreader.com/#flash-tools.
+## Ordo Missae: learn the shape of the Mass
 
-### Command line
+The whole Mass sits on one line, from the prayers at the foot of the altar to
+the Last Gospel. Today's propers are marked, with the unchanging Ordinary
+between them. Each part shows a small figure: **kneel**, **stand** or
+**sit**.
 
-1. Install [`esptool`](https://github.com/espressif/esptool):
+## Officium Divinum: pray the Hours in English, in Latin, or both
 
-```bash
-pip install esptool
-```
+Lauds, Vespers, Compline and the rest of the Divine Office. Pray in Latin, in
+English, or both together; the choice is in Settings.
 
-2. Download the firmware file for your device from the [releases page](https://github.com/crosspoint-reader/crosspoint-reader/releases).
-3. Connect your device via USB-C.
-4. Find the device port. On Linux, run `dmesg` after connecting. On macOS:
+The Latin carries the very words that monks, saints and ordinary faithful
+have prayed for well over a thousand years.
 
-```bash
-log stream --predicate 'subsystem == "com.apple.iokit"' --info
-```
+![The eight Hours on an arc, from Matutinum to Completorium, with the Hour now marked by a sun](docs/images/tabula/site-hours.jpg)
 
-5. Flash an X3 or X4:
+*“Seven times a day I have given praise to thee.”* The Hours sanctify the
+whole day: the Church at prayer from the watches of the night to the falling
+of evening.
 
-```bash
-esptool.py --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write_flash 0x10000 /path/to/firmware.bin
-```
+## At rest
 
-   Flash an Xteink X4Pro, Seeed reTerminal Sticky, or M5PaperMono:
+<img src="docs/images/tabula/screen-sleep.png" alt="The sleep screen: TABULA, Missale · Breviarium, the day's feast and date, and the Hours arc" width="264" align="left">
 
-```bash
-esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 write_flash 0x10000 /path/to/firmware.bin
-```
+When Tabula sleeps, its screen keeps the day:
+- the name **TABULA** under a cross
+- *Missale · Breviarium*
+- today's feast and the date
+- the eight Hours on an arc, with a sun on the Hour now
 
-### Manual
+It's drawn in one tone: all light, or all dark if you choose Dark in
+Settings.
 
-See [Development quick start](#development-quick-start) below.
+<br clear="left">
+
+## Res ipsa: small enough to keep beside you
+
+Smaller than a holy card, and just 5 mm thin. The back carries its name in
+Latin, *Missale · Breviarium*: the missal and the breviary.
+
+| | |
+|---|---|
+| **Size** | 64 × 98 mm, 5 mm thin, 58 g |
+| **Screen** | 3.7 in e-ink, like paper; best read in good light |
+| **Texts** | 1962 Missal propers and Ordinary; the Divine Office; daily readings |
+| **Languages** | Latin with English |
+| **Charging** | Magnetic, on the back |
+
+**Semper tecum.** Tabula has magnets in its back. On a phone with MagSafe it
+holds on with the screen facing out, so it comes with you. The magnets hold
+gently; a MagSafe case or ring holds it more firmly. It also fits easily in a
+pocket.
+
+## Pro paroeciis: made for our parishes
+
+Tabula is a work of love by Acutis Ignatius. A small number are prepared by
+hand for our parishes and offered at cost, with the proceeds given to the
+Church.
+
+The liturgical texts come from the [Divinum Officium](https://www.divinumofficium.com)
+project, with English from the Douay-Rheims. The software is built on the
+open-source [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader).
+
+**Need a hand?** If your Tabula won't turn on, you'd like help joining Wi-Fi,
+or something doesn't look right, write to
+[tabula@acutisignatius.com](mailto:tabula@acutisignatius.com). It helps to
+mention what you were doing and the version shown under Settings → About.
+
+*Ad maiorem Dei gloriam.*
 
 ---
 
-## Custom SD-card fonts
+## Technical information
 
-On devices with external RAM enabled in CrossPoint, copy `.ttf`, `.otf`, or `.ttc` files to the SD card and select them as reader fonts. Put one file in `/fonts/` or `/.fonts/`, or put one family's files in a subfolder. See the [SD card font guide](./docs/sd-card-fonts.md) for the folder layout and styles.
+Tabula is a fork of [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader)
+(based on `develop` @ `0727f9f`). CrossPoint's own README is kept in
+[CROSSPOINT.md](CROSSPOINT.md). Tabula code is behind `#if TABULA`, so the
+upstream builds are unchanged.
 
-On other devices, convert the font to `.cpfont` first. `.cpfont` files also work on devices with external RAM enabled and have better performance. No firmware reflash is needed to add fonts.
+### Hardware
 
-To make `.cpfont` files:
+- **Device:** Xteink X3, ESP32-C3 (single-core RISC-V, about 380 KB usable
+  RAM, **no PSRAM**), 3.7 in 528 × 792 one-bit e-ink panel, microSD card.
+- The USB port is the C3's fixed-function Serial/JTAG. There is no USB drive
+  mode, so the card is loaded over the serial link or by removing it.
+- Wi-Fi is 2.4 GHz only.
 
-1. Go to https://crosspointreader.com/fonts and open the "SD-card font builder" form.
-2. Upload up to four styles (regular, bold, italic, bold-italic), set the family name, point sizes, and Unicode range.
-3. Download the generated `.cpfont` files.
-4. Copy them to your SD card under `/fonts/YourFont/` (or `/.fonts/YourFont/` to hide the folder).
-5. Select the font on the device from the font settings.
+### Builds
 
-Conversion runs the firmware repo's `lib/EpdFont/scripts/fontconvert_sdcard.py` script unmodified, so output matches a local host build.
-
----
-
-## Documentation
-
-- [User Guide](./USER_GUIDE.md)
-- [Web server usage](./docs/webserver.md)
-- [Web server endpoints](./docs/webserver-endpoints.md)
-- [Project scope](./SCOPE.md)
-- [Contributing docs](./docs/contributing/README.md)
-- [Touch and UI development](./docs/contributing/touch-and-ui.md) - how to build new screens on the FreeInkUI activity bases (UiListActivity and friends), plus build envs for the non-Xteink touch devices
-
----
-
-## Development quick start
-
-### Prerequisites
-
-- [pioarduino PlatformIO Core](https://github.com/pioarduino/platformio-core) or [VS Code + pioarduino IDE](https://github.com/pioarduino/pioarduino-vscode-ide)
-- Python 3.8+
-- `clang-format` 21
-- USB-C cable supporting data transfer
-
-### Setup
-
-```bash
-git clone --recursive https://github.com/crosspoint-reader/crosspoint-reader
-cd crosspoint-reader
-
-# if cloned without --recursive:
-git submodule update --init --recursive
-```
-
-### Nix/NixOS
-
-Nix/NixOS users can enter the development shell with either `nix develop` (flakes) or `nix-shell`:
-
-```bash
-nix develop -f nix
-# or
-nix-shell nix
-```
-
-To flash a connected ESP32-C3 device, enable PlatformIO's udev rules in your NixOS configuration:
-
-```nix
-services.udev.packages = with pkgs; [ platformio-core.udev ];
-```
-
-After rebuilding the system configuration, reconnect the device or reload udev rules.
-
-### Build / flash / monitor
-
-```bash
-pio run --target upload
-```
-
-### Contributor pre-PR checks
-
-```bash
-./bin/clang-format-fix
-pio check -e default
-pio run -e default
-```
-
-### Debugging
-
-After flashing the new features, it’s recommended to capture detailed logs from the serial port.
-
-First, make sure all required Python packages are installed:
-
-```python
-python3 -m pip install pyserial colorama matplotlib
-```
-
-After that run the script:
+| Env | For | What |
+|---|---|---|
+| `tabula_dev` | Development | `-DTABULA=1`. Tabula screens, plus all CrossPoint features and the serial card loader. |
+| `tabula_parish` | Parishioners | Adds `-DTABULA_PARISH=1`: locked down, English UI only. The only image that ships. |
 
 ```sh
-# For Linux
-# This was tested on Debian and should work on most Linux systems.
-python3 scripts/debugging_monitor.py
-
-# For macOS
-python3 scripts/debugging_monitor.py /dev/cu.usbmodem2101
+pio run -e tabula_dev                                     # build
+pio run -e tabula_dev -t upload --upload-port <port>      # flash (wake the X3 first)
 ```
 
-Minor adjustments may be required for Windows.
+Opening the serial port resets the X3. A sleeping X3 has no USB port, so press
+a button before flashing.
 
----
+### Firmware layout
 
-## Internals
+| Path | What |
+|---|---|
+| `src/activities/tabula/` | Today (`TabulaHomeActivity`), Plura, Hours, Settings, Order of Mass, date and Hour logic (`TabulaDay`), shared Chorus ornaments (`TabulaArc`) |
+| `src/components/themes/tabula/` | `TabulaTheme`: arched button-hint niches over the Lyra theme |
+| `src/activities/boot_sleep/SleepActivity.cpp` | Sleep screen: the day's art plus the live Hours arc, light or dark |
+| `src/activities/reader/` | Reader changes under `TABULA`: button hints under every page, a short menu (Contents, Mark this page, Home), "Loading" instead of "Indexing" |
+| `src/CrossPointSettings.*` | `tabulaText` (Latin + English / Latin / English), `tabulaMass` (propers / full), `tabulaSleepDark`, `tabulaLayout` |
+| `src/main.cpp` | Dev-only serial card loader (`CMD:PUT`, `CMD:STAT`) |
 
-CrossPoint Reader is pretty aggressive about caching data down to the SD card to minimise RAM usage. The ESP32-C3 only has ~380KB of usable RAM, so we have to be careful. A lot of the decisions made in the design of the firmware were based on this constraint.
+### Content pipeline
 
-### Data caching
+The liturgical calendar is worked out on a computer, not on the device. The
+firmware only maps today's date to file names.
 
-The first time chapters of a book are loaded, they are cached to the SD card. Subsequent loads are served from the
-cache. This cache directory exists at `.crosspoint` on the SD card. The structure is as follows:
+1. **Texts:** the Divinum Officium data, exported with the backmuse
+   `tools/office` scripts for the 1962 rubrics. This produces one year of Mass
+   and Office JSON.
+2. **Books:** `docs/tabula/tools/build_sd_content.py` writes EPUBs in three
+   editions: bilingual, Latin (`.la`) and English (`.en`).
+   - Each Latin clause is paired with its English, in one paragraph per pair.
+   - Chapter ids follow `docs/tabula/sd/Tabula/Missal/ordo.json`, so Today can
+     open a book at the Introit or at the Hour now.
+3. **Art:** `docs/tabula/tools/render_tabula_art.py` draws each day's Today
+   header and sleep screen as one-bit BMPs. It checks that no ornament
+   overlaps text.
+4. **Font:** EB Garamond (OFL), converted to `.cpfont` at 14 to 22 pt by
+   `lib/EpdFont/scripts/build-sd-fonts.py` with
+   `docs/tabula/tools/tabula-fonts.yaml`. The C3 can't render TrueType at
+   runtime.
+5. **Card:** `docs/tabula/tools/load_card.py` sends `build/tabula-sd` over USB
+   serial in 8 KB chunks, each acknowledged and checked with CRC32. It skips
+   files already on the card and can resume.
 
-```text
-.crosspoint/
-├── epub_<hash>/         # one directory per book, named by content hash
-│   ├── progress.bin     # reading position (chapter, page, etc.)
-│   ├── cover.bmp        # generated cover image
-│   ├── book.bin         # metadata: title, author, spine, TOC
-│   ├── css_rules.cache  # parsed CSS rule cache
-│   ├── img_*            # rendered image cache files
-│   └── sections/        # per-chapter layout cache
-│       ├── 0.bin
-│       ├── 1.bin
-│       └── ...
-├── settings.json        # device settings
-├── state.json           # resume/runtime state
-└── recent.json          # recent books list
+Card layout:
+
+```
+/.fonts/EBGaramond/                    reading font (.cpfont)
+/Tabula/Today/<date>.propers{,.la,.en}.epub
+/Tabula/Today/<date>.full{,.la,.en}.epub
+/Tabula/Today/<date>.head.bmp           Today header art
+/Tabula/Hours/<date>.hours{,.la,.en}.epub
+/Tabula/Sleep/<date>.bmp                sleep screen art
+/Tabula/Missal/Ordo-Missae{,.la,.en}.epub, ordo.json
 ```
 
-Removing `/.crosspoint` clears all cached metadata and forces a full regeneration on next open. Book deletes, overwrites, and moves done through the firmware or web UI clear or re-key matching caches; manual SD-card edits may leave stale cache directories behind.
+### Tools
 
-For more details on the internal file structures, see the [file formats document](./docs/file-formats.md).
+| Tool | What |
+|---|---|
+| `docs/tabula/tools/grab_screen.py` | Saves what the X3 is showing as a PNG, through the firmware's `CMD:SCREENSHOT`. The screens in this README were captured with it. |
+| `docs/tabula/previews/screens.html` | HTML previews of the design directions |
 
----
+### Design docs
 
-## Contributing
+- [docs/tabula/DESIGN.md](docs/tabula/DESIGN.md): system design and parish lockdown
+- [docs/tabula/NETWORK_UPDATES.md](docs/tabula/NETWORK_UPDATES.md): plan for updating texts and firmware over Wi-Fi (not built yet)
+- [docs/tabula/handoff.md](docs/tabula/handoff.md): setup, hardware and content notes
+- [docs/tabula/brand/STICKER.md](docs/tabula/brand/STICKER.md): the back sticker
 
-Contributions are welcome. If you're new to the codebase, start with the [contributing docs](./docs/contributing/README.md). For things to work on, check the [ideas discussion board](https://github.com/crosspoint-reader/crosspoint-reader/discussions/categories/ideas) — leave a comment before starting so we don't duplicate effort.
+### Licenses
 
-Everyone here is a volunteer, so please be respectful and patient. For governance and community expectations, see [GOVERNANCE.md](./GOVERNANCE.md).
+- Firmware: MIT, from CrossPoint Reader and the FreeInk SDK
+- wolfSSL: GPL v2, so this source is public
+- Liturgical texts: Divinum Officium, MIT
+- EB Garamond: SIL Open Font License
 
----
+See [docs/tabula/LICENSES.txt](docs/tabula/LICENSES.txt).
 
-## Community forks
-
-One of the best things about open source is that anyone can take the code in a different direction. If you need something outside CrossPoint's [scope](./SCOPE.md), check out the community forks:
-
-- [CrossInk](https://github.com/uxjulia/CrossInk) — UX focused with minimal reading stats and broader customizations for the reading experience.
-
-- [papyrix-reader](https://github.com/bigbag/papyrix-reader) — Adds FB2 and MD format support. Actively maintained with Arabic script support. Custom themes.
-
-- [inx](https://github.com/obijuankenobiii/inx) — Completely reimagines the user interface with tabbed navigation.
-
-- [Witch(hunt) Reader](https://github.com/jpirnay/witchhunt-reader) — More faithful CSS styling and background work for slightly snappier interaction. Weather information panel. Markdown support.
-
-**Note:** Many of these features will make their way into CrossPoint over time. Each project chooses its own priorities and tradeoffs.
-
-Want to build your own device? Be sure to check out the [Silkscreen](https://silkscreenreader.com) project or [OnePage Reader](https://github.com/MoveCall/onepage-reader).
-
----
-
-CrossPoint Reader is **not affiliated with Xteink or any device manufacturer**.
+Tabula is not affiliated with or endorsed by Xteink, CrossPoint Reader,
+FreeInk, or the Divinum Officium Project.
