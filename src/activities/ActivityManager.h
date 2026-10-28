@@ -93,7 +93,8 @@ class ActivityManager {
   void goToLibrary();
   void goToBrowser();
   void goToPlugins(bool showOpds);
-  void goToReader(std::string path, bool allowFastInitialRefresh = false);
+  // startHref ("file.xhtml#anchor") opens an EPUB at that section instead of saved progress.
+  void goToReader(std::string path, bool allowFastInitialRefresh = false, std::string startHref = {});
   void goToSleep(bool fromTimeout = false);
   void goToBoot();
   void goToFullScreenMessage(std::string message, EpdFontFamily::Style style = EpdFontFamily::REGULAR);

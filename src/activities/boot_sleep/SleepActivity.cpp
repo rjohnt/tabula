@@ -24,6 +24,10 @@
 #include "CrossPointSettings.h"
 #include "CrossPointState.h"
 #include "activities/reader/ReaderUtils.h"
+#if TABULA
+#include "activities/tabula/TabulaArc.h"
+#include "activities/tabula/TabulaDay.h"
+#endif
 #include "components/UITheme.h"
 #include "fontIds.h"
 #include "images/Logo120.h"
@@ -607,6 +611,10 @@ void SleepActivity::onEnter() {
   // night-mode reader render.
   display.setInverted(false);
 
+#if TABULA
+  return renderTabulaSleepScreen();
+#endif
+
   const uint8_t sleepScreen = SETTINGS.sleepScreen;
   if (sleepScreen == CrossPointSettings::SLEEP_SCREEN_MODE::TRANSPARENT_CUSTOM ||
       sleepScreen == CrossPointSettings::SLEEP_SCREEN_MODE::COVER_TRANSPARENT) {
@@ -702,14 +710,41 @@ void SleepActivity::renderCustomSleepScreen() const {
 // firmware's only clean refresh in normal operation is the single-pass 0xD7
 // sequence, used once for the sleep image. It never runs the multi-flash GC
 // waveform (0xF7) that FULL_REFRESH selects (#2471's blinking complaint).
+#if TABULA
+// Artwork from docs/tabula/tools/render_tabula_art.py leaves the arc's band
+// (below its ARC_TOP) clear; these match its geometry.
+void SleepActivity::renderTabulaSleepScreen() const {
+  constexpr int ARC_CY = 600;
+  constexpr int ARC_RX = 150;
+  constexpr int ARC_RY = 30;
+  tm today{};
+  if (!tabula::localNow(today)) return renderDefaultSleepScreen();
+  HalFile file;
+  if (!Storage.openFileForRead("SLP", tabula::sleepArtPath(today), file)) return renderDefaultSleepScreen();
+  Bitmap bitmap(file, false);
+  if (bitmap.parseHeaders() != BmpReaderError::Ok) {
+    file.close();
+    return renderDefaultSleepScreen();
+  }
+  renderer.clearScreen();
+  const bool drawn = renderer.drawBitmap(bitmap, 0, 0, renderer.getScreenWidth(), renderer.getScreenHeight());
+  file.close();
+  if (!drawn) return renderDefaultSleepScreen();
+  tabula::drawHourArc(renderer, renderer.getScreenWidth() / 2, ARC_CY, ARC_RX, ARC_RY, tabula::hourIndex(today));
+  // Dark is the whole light design inverted, never mixed fields.
+  if (SETTINGS.tabulaSleepDark) renderer.invertScreen();
+  renderer.displayBuffer(kSleepClean);
+}
+#endif
+
 void SleepActivity::renderDefaultSleepScreen() const {
   const auto pageWidth = renderer.getScreenWidth();
   const auto pageHeight = renderer.getScreenHeight();
 
   renderer.clearScreen();
   renderer.drawImage(Logo120, (pageWidth - 120) / 2, (pageHeight - 120) / 2, 120, 120);
-  renderer.drawCenteredText(UI_10_FONT_ID, pageHeight / 2 + 70, tr(STR_CROSSPOINT), true, EpdFontFamily::BOLD);
-  renderer.drawCenteredText(SMALL_FONT_ID, pageHeight / 2 + 95, tr(STR_SLEEPING));
+  renderer.drawCenteredText(UI_10_FONT_ID, pageHeight / 2 + 70, tr(STR_TABULA), true, EpdFontFamily::BOLD);
+  renderer.drawCenteredText(SMALL_FONT_ID, pageHeight / 2 + 95, tr(STR_TABULA_MOTTO));
 
   // Make sleep screen dark unless light is selected in settings
   if (SETTINGS.sleepScreen != CrossPointSettings::SLEEP_SCREEN_MODE::LIGHT) {

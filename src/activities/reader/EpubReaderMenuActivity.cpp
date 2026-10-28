@@ -44,6 +44,20 @@ void EpubReaderMenuActivity::buildMenuItems(std::vector<MenuItem>& items, const 
                                             const bool hasBookmarks, const bool hasClippings) {
   items.clear();
   items.reserve(MAX_MENU_ITEMS);
+#if TABULA
+  // Parishioners get only what reading the day's texts needs; text size and
+  // the rest live in Tabula's own Settings.
+  items.push_back({MenuAction::SELECT_CHAPTER, StrId::STR_TABULA_CONTENTS});
+  if (hasFootnotes) items.push_back({MenuAction::FOOTNOTES, StrId::STR_FOOTNOTES});
+  items.push_back({MenuAction::TOGGLE_BOOKMARK, StrId::STR_TABULA_MARK_PAGE});
+  if (hasBookmarks) items.push_back({MenuAction::BOOKMARKS, StrId::STR_TABULA_MARKED_PAGES});
+  if (Frontlight.present() && !slideSwitchOwnsLight()) {
+    items.push_back({MenuAction::FRONTLIGHT, StrId::STR_FRONTLIGHT});
+  }
+  items.push_back({MenuAction::GO_HOME, StrId::STR_TABULA_GO_HOME});
+  (void)hasClippings;
+  return;
+#endif
   items.push_back({MenuAction::SELECT_CHAPTER, StrId::STR_SELECT_CHAPTER});
   if (hasFootnotes) {
     items.push_back({MenuAction::FOOTNOTES, StrId::STR_FOOTNOTES});

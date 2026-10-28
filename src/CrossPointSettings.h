@@ -346,6 +346,15 @@ class CrossPointSettings : public PersistableStore<CrossPointSettings> {
   uint8_t readerMenuStyle = READER_MENU_LIST;
   // SD card font family name (empty = use built-in fontFamily)
   char sdFontFamilyName[32] = "";
+#if TABULA
+  enum TABULA_TEXT { TABULA_TEXT_BOTH = 0, TABULA_TEXT_LATIN = 1, TABULA_TEXT_ENGLISH = 2, TABULA_TEXT_COUNT };
+  enum TABULA_MASS { TABULA_MASS_PROPERS = 0, TABULA_MASS_FULL = 1, TABULA_MASS_COUNT };
+  // Which edition of the day's texts Tabula opens (docs/tabula/DESIGN.md §5a).
+  uint8_t tabulaText = TABULA_TEXT_BOTH;
+  uint8_t tabulaMass = TABULA_MASS_PROPERS;
+  uint8_t tabulaSleepDark = 0;  // sleep screensaver drawn inverted
+  uint8_t tabulaLayout = 0;     // last reading-layout defaults applied (TabulaHomeActivity)
+#endif
   // Dictionary folder name under /dictionaries (empty = no dictionary)
   char dictionaryName[32] = "";
   // Master switch for all SD-card plugin discovery/execution. New installs keep

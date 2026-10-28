@@ -14,6 +14,10 @@ class SleepActivity final : public Activity {
 
  private:
   void renderDefaultSleepScreen() const;
+#if TABULA
+  // The day's screensaver from /Tabula/Sleep with the Hour arc drawn over it.
+  void renderTabulaSleepScreen() const;
+#endif
   void renderCustomSleepScreen() const;
   void renderCoverSleepScreen() const;
   void renderBitmapSleepScreen(const Bitmap& bitmap, bool preserveBackground = false) const;

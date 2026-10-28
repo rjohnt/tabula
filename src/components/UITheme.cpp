@@ -16,6 +16,9 @@
 #include "components/themes/BaseTheme.h"
 #include "components/themes/lyra/Lyra3CoversTheme.h"
 #include "components/themes/lyra/LyraTheme.h"
+#if TABULA
+#include "components/themes/tabula/TabulaTheme.h"
+#endif
 #include "components/themes/roundedraff/RoundedRaffTheme.h"
 
 UITheme UITheme::instance;
@@ -37,6 +40,9 @@ bool UITheme::hasCoverGridHome() { return SETTINGS.uiTheme == CrossPointSettings
 void UITheme::drawCoverGridHome(CoverGridHomeUi& home) { home.renderUi(); }
 
 void UITheme::setTheme(CrossPointSettings::UI_THEME type) {
+#if TABULA
+  type = CrossPointSettings::LYRA;  // Tabula has one look; Lyra metrics, Tabula hints.
+#endif
   if (type == CrossPointSettings::COVER_GRID && !supportsCoverGrid()) type = CrossPointSettings::LYRA;
 
   switch (type) {
@@ -48,7 +54,11 @@ void UITheme::setTheme(CrossPointSettings::UI_THEME type) {
     case CrossPointSettings::UI_THEME::COVER_GRID:
     case CrossPointSettings::UI_THEME::LYRA: {
       // The cover home owns its screen-lifetime UI state; other screens retain Lyra styling.
+#if TABULA
+      auto theme = makeUniqueNoThrow<TabulaTheme>();
+#else
       auto theme = makeUniqueNoThrow<LyraTheme>();
+#endif
       if (!theme) {
         LOG_ERR("UI", "OOM: Lyra theme");
         return;

@@ -33,3 +33,10 @@ lib/EpdFont/scripts/output/
 sdkconfig.sticky
 sdkconfig.x4pro
 flake.*
+
+# Tabula: local-only files
+backups/
+flash.log
+docs/tabula/brand/reference/
+docs/tabula/previews/readme.html
+docs/tabula/previews/readme-img/

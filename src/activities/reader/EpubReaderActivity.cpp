@@ -60,6 +60,21 @@
 #include "util/ButtonNavigator.h"
 #include "util/ScreenshotUtil.h"
 
+// Parishioners see "Loading" while a book's sections are prepared.
+#if TABULA
+#define READER_PREPARING_TEXT STR_TABULA_LOADING
+#else
+#define READER_PREPARING_TEXT STR_INDEXING
+#endif
+
+// Tabula keeps the front-button hints under every page, so a parishioner can
+// see which button turns the page; the text and status bar sit above them.
+#if TABULA
+constexpr int READER_HINTS_HEIGHT = 40;  // LyraMetrics buttonHintsHeight
+#else
+constexpr int READER_HINTS_HEIGHT = 0;
+#endif
+
 namespace {
 // The X4 Pro and X4 Classic carry the X4's panel but sit outside isXteinkDevice()
 // (that helper also gates power management). Overlay refresh choices are per-panel:
@@ -247,7 +262,7 @@ bool EpubReaderActivity::loadBook() {
   const bool uncached = !Storage.exists((loadedEpub->getCachePath() + "/book.bin").c_str());
   if (uncached) {
     disableFastInitialRefresh();
-    GUI.drawPopup(renderer, tr(STR_INDEXING));
+    GUI.drawPopup(renderer, tr(READER_PREPARING_TEXT));
   }
 
   bool loaded;
@@ -302,6 +317,20 @@ bool EpubReaderActivity::loadBook() {
       cachedVisibleTextOffset.reset();
       LOG_DBG("ERS", "Opened for first time, navigating to text reference at index %d", textSpineIndex);
     }
+  }
+
+  if (!startHref.empty()) {
+    const int target = epub->resolveHrefToSpineIndex(startHref);
+    if (target >= 0) {
+      const auto hashPos = startHref.find('#');
+      pendingAnchor = hashPos != std::string::npos ? startHref.substr(hashPos + 1) : std::string{};
+      currentSpineIndex = target;
+      nextPageNumber = 0;
+      cachedVisibleTextOffset.reset();
+    } else {
+      LOG_DBG("ERS", "Start href not in book: %s", startHref.c_str());
+    }
+    startHref.clear();
   }
 
   loadLinkStack();
@@ -401,7 +430,7 @@ bool EpubReaderActivity::buildTickHeapGate() {
 
 void EpubReaderActivity::showBuildPopup(GfxRenderer& renderer, int& pagesUntilFullRefresh) {
   if (!buildPopupPending || !renderer.hasFrameBuffer()) return;
-  GUI.drawPopup(renderer, tr(STR_INDEXING));
+  GUI.drawPopup(renderer, tr(READER_PREPARING_TEXT));
   pagesUntilFullRefresh = 1;
   buildPopupPending = false;
 }
@@ -1648,6 +1677,7 @@ void EpubReaderActivity::renderBook() {
   } else {
     orientedMarginBottom += std::max(SETTINGS.screenMargin, statusBarHeight);
   }
+  orientedMarginBottom += READER_HINTS_HEIGHT;
 
   const uint16_t viewportWidth = renderer.getScreenWidth() - orientedMarginLeft - orientedMarginRight;
   const uint16_t viewportHeight = renderer.getScreenHeight() - orientedMarginTop - orientedMarginBottom;
@@ -1683,10 +1713,10 @@ void EpubReaderActivity::renderBook() {
 
       const bool needsFullBuild = pendingPercentJump;
       if (needsFullBuild) {
-        GUI.drawPopup(renderer, tr(STR_INDEXING));
+        GUI.drawPopup(renderer, tr(READER_PREPARING_TEXT));
         pagesUntilFullRefresh = 1;
         const auto popupFn = [this]() {
-          if (renderer.hasFrameBuffer()) GUI.drawPopup(renderer, tr(STR_INDEXING));
+          if (renderer.hasFrameBuffer()) GUI.drawPopup(renderer, tr(READER_PREPARING_TEXT));
         };
         if (!makeRoomForChapterBuild()) {
           section.reset();
@@ -1724,7 +1754,7 @@ void EpubReaderActivity::renderBook() {
                                              target > BUILD_POPUP_PAGE_THRESHOLD);
           }
           if (showPopup) {
-            GUI.drawPopup(renderer, tr(STR_INDEXING));
+            GUI.drawPopup(renderer, tr(READER_PREPARING_TEXT));
             pagesUntilFullRefresh = 1;
           }
           buildPopupPending = !showPopup;
@@ -1826,7 +1856,7 @@ void EpubReaderActivity::renderBook() {
     return;
   }
   if (section->isPartial() && section->currentPage >= static_cast<int>(section->pageCount)) {
-    GUI.drawPopup(renderer, tr(STR_INDEXING));
+    GUI.drawPopup(renderer, tr(READER_PREPARING_TEXT));
     pagesUntilFullRefresh = 1;
   }
   while (section->isPartial() && section->currentPage >= static_cast<int>(section->pageCount)) {
@@ -2457,8 +2487,13 @@ void EpubReaderActivity::renderStatusBar() const {
     title = epub ? epub->getTitle() : "";
   }
 
-  GUI.drawStatusBar(renderer, bookProgress, currentPage, pageCount, title, 0, textYOffset, true, currentPageBookmarked,
-                    section ? section->isBuilding() : false);
+  GUI.drawStatusBar(renderer, bookProgress, currentPage, pageCount, title, READER_HINTS_HEIGHT, textYOffset, true,
+                    currentPageBookmarked, section ? section->isBuilding() : false);
+#if TABULA
+  const auto labels = mappedInput.mapLabels(tr(STR_TABULA_HINT_HOME), tr(STR_TABULA_HINT_MENU),
+                                            tr(STR_TABULA_HINT_PREV), tr(STR_TABULA_HINT_NEXT));
+  GUI.drawButtonHints(renderer, labels.btn1, labels.btn2, labels.btn3, labels.btn4);
+#endif
 }
 
 // ---------------------------------------------------------------------------
@@ -2479,7 +2514,11 @@ static_assert(std::size(kAlignIds) == CrossPointSettings::PARAGRAPH_ALIGNMENT_CO
 bool EpubReaderActivity::usesToolbarMenu() const {
   // Both board classes drive the same chrome: touch through the FreeInkUI tap
   // targets, buttons through the focused-tool pill and the panel cursor.
+#if TABULA
+  return false;  // Tabula's short list menu only
+#else
   return SETTINGS.readerMenuStyle == CrossPointSettings::READER_MENU_TOOLBAR;
+#endif
 }
 
 std::string EpubReaderActivity::currentChapterTitle() const {

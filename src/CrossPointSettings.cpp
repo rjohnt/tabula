@@ -100,6 +100,12 @@ void CrossPointSettings::toJson(JsonDocument& doc) const {
   if (sdFontFamilyName[0] != '\0') {
     doc["sdFontFamilyName"] = sdFontFamilyName;
   }
+#if TABULA
+  doc["tabulaText"] = tabulaText;
+  doc["tabulaMass"] = tabulaMass;
+  doc["tabulaSleepDark"] = tabulaSleepDark;
+  doc["tabulaLayout"] = tabulaLayout;
+#endif
   // Dictionary folder name — uses dynamic getter/setter in SettingsList, save manually
   if (dictionaryName[0] != '\0') {
     doc["dictionaryName"] = dictionaryName;
@@ -279,6 +285,12 @@ bool CrossPointSettings::fromJson(JsonVariantConst doc) {
     }
   }
   if (storedFontFamily != STORED_NOTOSANS) needsResave = true;
+#if TABULA
+  tabulaText = clamp(doc["tabulaText"] | (uint8_t)TABULA_TEXT_BOTH, TABULA_TEXT_COUNT, TABULA_TEXT_BOTH);
+  tabulaMass = clamp(doc["tabulaMass"] | (uint8_t)TABULA_MASS_PROPERS, TABULA_MASS_COUNT, TABULA_MASS_PROPERS);
+  tabulaSleepDark = clamp(doc["tabulaSleepDark"] | (uint8_t)0, 2, 0);
+  tabulaLayout = doc["tabulaLayout"] | (uint8_t)0;
+#endif
   // Dictionary folder name — uses dynamic getter/setter in SettingsList, load manually
   copyToField(dictionaryName, doc["dictionaryName"] | "", sizeof(dictionaryName));
   // Language -- stored as code string for stability across enum reorders.
@@ -347,7 +359,12 @@ float CrossPointSettings::getReaderLineCompression() const {
   if (sdFontFamilyName[0] != '\0') {
     switch (lineSpacing) {
       case TIGHT:
+#if TABULA
+        // EB Garamond's own leading is loose; keep a Latin line close to its English.
+        return 0.88f;
+#else
         return 0.95f;
+#endif
       case NORMAL:
       default:
         return 1.0f;

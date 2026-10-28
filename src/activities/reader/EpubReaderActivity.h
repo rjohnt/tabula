@@ -27,6 +27,8 @@ class EpubReaderActivity final : public ReaderActivity {
   int nextPageNumber = 0;
   std::optional<uint16_t> pendingPageJump;
   std::string pendingAnchor;
+  // One-shot section to open at, overriding saved progress (see ActivityManager::goToReader).
+  std::string startHref;
   int cachedSpineIndex = 0;
   int cachedChapterTotalPageCount = 0;
   std::optional<uint32_t> cachedVisibleTextOffset;
@@ -246,8 +248,9 @@ class EpubReaderActivity final : public ReaderActivity {
 
  public:
   explicit EpubReaderActivity(GfxRenderer& renderer, MappedInputManager& mappedInput, std::string bookPath,
-                              bool allowFastInitialRefresh)
-      : ReaderActivity("EpubReader", renderer, mappedInput, std::move(bookPath), allowFastInitialRefresh) {}
+                              bool allowFastInitialRefresh, std::string startHref = {})
+      : ReaderActivity("EpubReader", renderer, mappedInput, std::move(bookPath), allowFastInitialRefresh),
+        startHref(std::move(startHref)) {}
   ~EpubReaderActivity() override;
 
   void loop() override;

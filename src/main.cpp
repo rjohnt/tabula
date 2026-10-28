@@ -23,6 +23,7 @@
 #include <XteinkDetect.h>
 #include <builtinFonts/all.h>
 #include <esp_heap_caps.h>
+#include <esp_rom_crc.h>
 #include <esp_wifi.h>
 #include <time.h>
 
@@ -40,6 +41,9 @@
 #include "RecentBooksStore.h"
 #include "SdCardFontSystem.h"
 #include "WifiCredentialStore.h"
+#if TABULA
+#include "activities/tabula/TabulaDay.h"
+#endif
 #include "activities/Activity.h"
 #include "activities/ActivityManager.h"
 #include "activities/settings/SdFirmwareUpdateActivity.h"
@@ -566,6 +570,10 @@ void setup() {
   // enumeration proceed asynchronously so users do not pay this startup cost.
   delay(250);
 #endif
+#if TABULA && !TABULA_PARISH
+  // Room for one card-loader chunk (tabulaSerialPut); the 256-byte default overflows.
+  logSerial.setRxBufferSize(8192 + 512);
+#endif
   Serial.begin(115200);
 #if LOG_SERIAL_HAS_TX_TIMEOUT
   logSerial.setTxTimeoutMs(1);  // This is a load-bearing 1. Do not modify.
@@ -800,7 +808,13 @@ void setup() {
     // openEpubPath + lastSleepFromReader from a prior session.
     activityManager.goHome();
   } else if (APP_STATE.openEpubPath.empty() || !APP_STATE.lastSleepFromReader ||
-             mappedInputManager.isPressed(MappedInputManager::Button::Back) || APP_STATE.readerActivityLoadCount > 0) {
+             mappedInputManager.isPressed(MappedInputManager::Button::Back) ||
+             APP_STATE.readerActivityLoadCount > 0
+#if TABULA
+             // A new day opens on Today rather than in yesterday's texts.
+             || tabula::isStaleDailyBook(APP_STATE.openEpubPath)
+#endif
+  ) {
     // Boot to home screen if no book is open, last sleep was not from reader, back button is held, or reader activity
     // crashed (indicated by readerActivityLoadCount > 0)
     activityManager.goHome(HomeMenuItem::NONE, needsWakeRefresh);
@@ -832,6 +846,75 @@ void setup() {
 
   allowSleepAt = millis() + 2000;
 }
+
+#if TABULA && !TABULA_PARISH
+// Development card loader over the USB serial link (the C3 has no USB drive
+// mode): "CMD:PUT <size> <crc32 hex> <path>", then exactly <size> raw bytes.
+// Written to <path>.part and renamed only when the CRC matches, so an
+// interrupted transfer never leaves a truncated book. docs/tabula/tools/load_card.py.
+namespace {
+constexpr size_t PUT_CHUNK = 8192;
+
+void tabulaSerialPut(const String& args) {
+  const int s1 = args.indexOf(' ');
+  const int s2 = s1 < 0 ? -1 : args.indexOf(' ', s1 + 1);
+  if (s2 < 0) {
+    logSerial.printf("PUT_ERR args\n");
+    return;
+  }
+  const uint32_t size = strtoul(args.substring(0, s1).c_str(), nullptr, 10);
+  const uint32_t want = strtoul(args.substring(s1 + 1, s2).c_str(), nullptr, 16);
+  const String path = args.substring(s2 + 1);
+  const String part = path + ".part";
+  const int slash = path.lastIndexOf('/');
+  if (slash > 0) Storage.mkdir(path.substring(0, slash).c_str());
+  HalFile file;
+  if (!Storage.openFileForWrite("PUT", part, file)) {
+    logSerial.printf("PUT_ERR open\n");
+    return;
+  }
+  logSerial.printf("PUT_READY\n");
+  // Static so a transfer adds no heap or loop-task stack. The host sends one
+  // chunk, then waits for "K" so the receive buffer can never overflow.
+  static uint8_t buf[PUT_CHUNK];
+  uint32_t got = 0;
+  uint32_t crc = 0;
+  bool ok = true;
+  while (got < size && ok) {
+    const size_t chunk = std::min<size_t>(PUT_CHUNK, size - got);
+    size_t have = 0;
+    const unsigned long start = millis();
+    while (have < chunk) {
+      const size_t n = logSerial.readBytes(buf + have, chunk - have);
+      have += n;
+      if (n == 0 && millis() - start > 3000) break;
+    }
+    if (have != chunk || file.write(buf, chunk) != chunk) {
+      ok = false;
+      break;
+    }
+    crc = esp_rom_crc32_le(crc, buf, static_cast<uint32_t>(chunk));
+    got += chunk;
+    logSerial.printf("K\n");
+  }
+  file.close();
+  if (!ok || crc != want) {
+    Storage.remove(part.c_str());
+    logSerial.printf("PUT_ERR %s\n", ok ? "crc" : "io");
+    return;
+  }
+  Storage.remove(path.c_str());
+  if (!Storage.rename(part.c_str(), path.c_str())) {
+    logSerial.printf("PUT_ERR rename\n");
+    return;
+  }
+  // The reader's cache is keyed by path alone, so a replaced book would keep
+  // the old book's CSS, spine and pages.
+  if (path.endsWith(".epub")) Epub(path.c_str(), "/.crosspoint").clearCache();
+  logSerial.printf("PUT_OK\n");
+}
+}  // namespace
+#endif
 
 void loop() {
   static unsigned long maxLoopDuration = 0;
@@ -900,7 +983,9 @@ void loop() {
 
   // Handle incoming serial commands,
   // nb: we use logSerial from logging to avoid deprecation warnings
+  bool serialActed = false;
   if (logSerial.available() > 0) {
+    serialActed = true;
     String line = logSerial.readStringUntil('\n');
     if (line.startsWith("CMD:")) {
       String cmd = line.substring(4);
@@ -912,13 +997,28 @@ void loop() {
         logSerial.write(buf, bufferSize);
         logSerial.printf("SCREENSHOT_END\n");
       }
+#if TABULA && !TABULA_PARISH
+      else if (cmd.startsWith("PUT ")) {
+        tabulaSerialPut(cmd.substring(4));
+      } else if (cmd.startsWith("STAT ")) {
+        // Size of a card file, -1 if absent; lets the loader resume.
+        HalFile f;
+        const String path = cmd.substring(5);
+        if (Storage.openFileForRead("PUT", path, f)) {
+          logSerial.printf("STAT %u\n", static_cast<unsigned>(f.size()));
+          f.close();
+        } else {
+          logSerial.printf("STAT -1\n");
+        }
+      }
+#endif
     }
   }
 
   // Check for any user activity (button press or release) or active background work
   static unsigned long lastActivityTime = millis();
   if (gpio.wasAnyPressed() || gpio.wasAnyReleased() || gpio.wasTouchActivity() || halTiltSensor.hadActivity() ||
-      remoteActed || activityManager.preventAutoSleep()) {
+      remoteActed || serialActed || activityManager.preventAutoSleep()) {
     lastActivityTime = millis();         // Reset inactivity timer
     powerManager.setPowerSaving(false);  // Restore normal CPU frequency on user activity
   }

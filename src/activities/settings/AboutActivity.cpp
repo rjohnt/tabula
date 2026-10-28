@@ -27,14 +27,31 @@ enum MenuItem {
   ITEM_RTC,
   ITEM_IMU,
   ITEM_MAC,
+  ITEM_BASED_ON,
+  ITEM_SDK,
+  ITEM_TEXTS,
+  ITEM_SOURCE,
 };
 
 // Deliberately hardcoded English, exempt from the tr() rule: support reads
 // these screenshots across every device language, so the labels must be
 // identical on every unit.
 const char* const menuNames[AboutActivity::ITEM_COUNT] = {
-    "Device", "Firmware",          "Chip",        "Flash", "Display Controller", "Resolution", "Touch", "Frontlight",
-    "RTC",    "Tilt Sensor (IMU)", "MAC Address",
+    "Device",
+    "Firmware",
+    "Chip",
+    "Flash",
+    "Display Controller",
+    "Resolution",
+    "Touch",
+    "Frontlight",
+    "RTC",
+    "Tilt Sensor (IMU)",
+    "MAC Address",
+    "Based on",
+    "SDK",
+    "Liturgical texts",
+    "Source",
 };
 
 // Chip part numbers, not user prose — deliberately untranslated.
@@ -115,6 +132,11 @@ void AboutActivity::onEnter() {
   esp_read_mac(mac, ESP_MAC_WIFI_STA);
   snprintf(buf, sizeof(buf), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
   rowValues_[ITEM_MAC] = buf;
+  // Attribution required by the MIT licenses (docs/tabula/LICENSES.txt).
+  rowValues_[ITEM_BASED_ON] = "CrossPoint Reader (MIT)";
+  rowValues_[ITEM_SDK] = "FreeInk (MIT)";
+  rowValues_[ITEM_TEXTS] = "Divinum Officium (MIT)";
+  rowValues_[ITEM_SOURCE] = "github.com/rjohnt/tabula";
 }
 
 void AboutActivity::buildScreen(UiScreen& screen) {
