@@ -5,7 +5,6 @@
 #include <I18n.h>
 #include <Logging.h>
 #include <PersistableStore.h>
-#include <TrustedTime.h>
 
 #include <algorithm>
 #include <cctype>
@@ -15,6 +14,7 @@
 
 #include "HalDisplay.h"
 #include "TabulaArc.h"
+#include "TabulaDay.h"
 #include "activities/ActivityManager.h"
 #include "components/UITheme.h"
 #include "fontIds.h"
@@ -23,6 +23,13 @@ namespace {
 constexpr char ORDO_PATH[] = "/Tabula/Missal/ordo.json";
 constexpr char ORDINARY_BOOK[] = "/Tabula/Missal/Ordo-Missae.epub";
 constexpr char TODAY_DIR[] = "/Tabula/Today";
+
+const char* postureLabel(const std::string& posture) {
+  if (posture == "KNEEL") return tr(STR_TABULA_KNEEL);
+  if (posture == "STAND") return tr(STR_TABULA_STAND);
+  if (posture == "SIT") return tr(STR_TABULA_SIT);
+  return posture.c_str();
+}
 
 // Layout, in pixels at the X3/X4 portrait width (matches the 1-bit previews
 // rendered by docs/tabula/tools/render_ordo_previews.py).
@@ -52,12 +59,15 @@ bool OrderOfMassActivity::loadOrdo() {
     Step step;
     if (!obj["section"].isNull()) {
       step.isSection = true;
-      step.latin = obj["section"] | "";
+      const char* es = obj["section_es"];
+      step.latin = tabula::spanish() && es && *es ? es : (obj["section"] | "");
       for (char& c : step.latin) c = static_cast<char>(toupper(static_cast<unsigned char>(c)));
     } else {
       step.id = obj["id"] | "";
       step.latin = obj["la"] | "";
-      step.english = obj["en"] | "";
+      // The device language's name for the part; English when ordo.json has no Spanish.
+      const char* es = obj["es"];
+      step.english = tabula::spanish() && es && *es ? es : (obj["en"] | "");
       step.posture = obj["posture"] | "";
       for (char& c : step.posture) c = static_cast<char>(toupper(static_cast<unsigned char>(c)));
       step.proper = strcmp(obj["kind"] | "", "proper") == 0;
@@ -114,17 +124,11 @@ void OrderOfMassActivity::openSelected() {
   const Step& step = steps[selected];
   const std::string href = step.id + ".xhtml";
   if (step.proper) {
-    const time_t now = static_cast<time_t>(trustedtime::trustedNow());
-    if (now != 0) {
-      tm local{};
-      localtime_r(&now, &local);
-      char path[48];
-      snprintf(path, sizeof(path), "%s/%04d-%02d-%02d.propers.epub", TODAY_DIR, local.tm_year + 1900, local.tm_mon + 1,
-               local.tm_mday);
-      if (Storage.exists(path)) {
-        activityManager.goToReader(path, false, href);
-        return;
-      }
+    tm local{};
+    const std::string path = tabula::localNow(local) ? tabula::propersPath(local) : std::string{};
+    if (!path.empty()) {
+      activityManager.goToReader(path, false, href);
+      return;
     }
     activityManager.goToFileBrowser(TODAY_DIR);
     return;
@@ -181,10 +185,14 @@ void OrderOfMassActivity::render(RenderLock&&) {
                                  Color::White);
       }
       const bool ink = !isSelected;
-      renderer.drawText(UI_12_FONT_ID, TEXT_X, y + 2, step.latin.c_str(), ink, EpdFontFamily::BOLD);
-      renderer.drawText(UI_10_FONT_ID, TEXT_X, y + 28, step.english.c_str(), ink);
-      const int postureW = renderer.getTextWidth(SMALL_FONT_ID, step.posture.c_str());
-      renderer.drawText(SMALL_FONT_ID, width - RIGHT_INSET - postureW, y + 6, step.posture.c_str(), ink);
+      const char* posture = postureLabel(step.posture);
+      const int postureW = renderer.getTextWidth(SMALL_FONT_ID, posture);
+      // The name stops short of the posture figure.
+      const int nameW = width - RIGHT_INSET - postureW - 30 - 8 - TEXT_X;
+      const std::string name = renderer.truncatedText(UI_12_FONT_ID, step.english.c_str(), nameW, EpdFontFamily::BOLD);
+      renderer.drawText(UI_12_FONT_ID, TEXT_X, y + 2, name.c_str(), ink, EpdFontFamily::BOLD);
+      renderer.drawText(UI_10_FONT_ID, TEXT_X, y + 28, step.latin.c_str(), ink, EpdFontFamily::ITALIC);
+      renderer.drawText(SMALL_FONT_ID, width - RIGHT_INSET - postureW, y + 6, posture, ink);
       tabula::drawPosture(renderer, width - RIGHT_INSET - postureW - 30, y + 2, step.posture.c_str(), ink);
       y += STEP_H;
     }

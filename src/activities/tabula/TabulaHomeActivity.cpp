@@ -12,11 +12,14 @@
 
 #include "CrossPointSettings.h"
 #include "HalDisplay.h"
+#include "OrderOfMassActivity.h"
 #include "RecentBooksStore.h"
 #include "SdCardFontSystem.h"
 #include "TabulaArc.h"
 #include "TabulaDay.h"
-#include "TabulaMoreActivity.h"
+#include "TabulaHoursActivity.h"
+#include "TabulaOtherMassesActivity.h"
+#include "TabulaSettingsActivity.h"
 #include "activities/ActivityManager.h"
 #include "components/UITheme.h"
 #include "fontIds.h"
@@ -24,15 +27,18 @@
 namespace {
 // The header art is drawn at this size by docs/tabula/tools/render_tabula_art.py.
 constexpr int HEAD_H = 300;
-constexpr int ROWS_TOP = 316;
-constexpr int ROW_H = 74;
+// Seven rows fit between the art (its blank foot overlaps the first row's top
+// margin) and the button hints.
+constexpr int ROWS_TOP = 288;
+constexpr int ROW_H = 66;
+constexpr int FILL_H = ROW_H - 6;
 constexpr int SIDE = 18;
 constexpr int MARK_X = SIDE + 24;
 constexpr int TEXT_X = SIDE + 48;
 constexpr char READING_FONT[] = "EBGaramond";
 constexpr char READING_FONT_DIR[] = "/.fonts/EBGaramond";
 constexpr uint8_t READING_POINT_SIZE = 16;
-constexpr uint8_t READING_LAYOUT = 1;
+constexpr uint8_t READING_LAYOUT = 2;
 
 // A small quatrefoil: four circles round a centre (the Chorus row mark).
 void drawQuatrefoil(const GfxRenderer& renderer, const int cx, const int cy, const bool ink) {
@@ -59,10 +65,14 @@ void TabulaHomeActivity::applyFirstRunDefaults() {
   }
   // Layout 1: Latin and English lines set close and flush left (no first-line
   // indent, which would shift only the Latin line), the gap only between pairs.
-  if (SETTINGS.tabulaLayout < READING_LAYOUT) {
+  if (SETTINGS.tabulaLayout < 1) {
     SETTINGS.lineSpacing = CrossPointSettings::TIGHT;
     SETTINGS.paragraphIndentSpaces = 0;
     SETTINGS.extraParagraphSpacing = 1;
+  }
+  // Layout 2: the dark sleep screen is the default.
+  if (SETTINGS.tabulaLayout < 2) SETTINGS.tabulaSleepDark = 1;
+  if (SETTINGS.tabulaLayout < READING_LAYOUT) {
     SETTINGS.tabulaLayout = READING_LAYOUT;
     SETTINGS.saveToFile();
   }
@@ -106,10 +116,19 @@ void TabulaHomeActivity::onEnter() {
     subtitles_[rowCount_] = std::move(subtitle);
     rowCount_++;
   };
+  char hours[48];
+  snprintf(hours, sizeof(hours), tr(STR_TABULA_HOURS_SUB), tabula::hourName(hour_));
   add(Row::Mass, tr(STR_TABULA_MASS_TODAY), tr(STR_TABULA_MASS_TODAY_SUB));
-  add(Row::Hour, tabula::hourLatin(hour_), std::string(tabula::hourEnglish(hour_)) + " · " + tr(STR_TABULA_HOUR_NOW));
-  if (!continuePath_.empty()) add(Row::Continue, tr(STR_TABULA_CONTINUE), continueTitle);
-  add(Row::More, tr(STR_TABULA_MORE), tr(STR_TABULA_MORE_SUB));
+  add(Row::Hours, tr(STR_TABULA_HOURS), hours);
+  if (!continuePath_.empty()) {
+    char resume[96];
+    snprintf(resume, sizeof(resume), tr(STR_TABULA_RESUME), continueTitle.c_str());
+    add(Row::Continue, tr(STR_TABULA_CONTINUE), resume);
+  }
+  add(Row::OtherMasses, tr(STR_TABULA_OTHER_MASSES), tr(STR_TABULA_OTHER_MASSES_SUB));
+  add(Row::OrderOfMass, tr(STR_TABULA_ORDER_OF_MASS), tr(STR_TABULA_ORDO_SUB));
+  add(Row::Prayers, tr(STR_TABULA_PRAYERS), tr(STR_TABULA_PRAYERS_SUB));
+  add(Row::Settings, tr(STR_SETTINGS_TITLE), tr(STR_TABULA_SETTINGS_SUB));
 
   selected_ = 0;
   status_ = nullptr;
@@ -117,38 +136,54 @@ void TabulaHomeActivity::onEnter() {
 }
 
 void TabulaHomeActivity::activate(const Row row) {
-  tm local{};
-  const bool dated = tabula::localNow(local);
+  std::unique_ptr<Activity> next;
   switch (row) {
-    case Row::Mass:
-    case Row::Hour: {
-      if (!dated) {
+    case Row::Mass: {
+      tm local{};
+      if (!tabula::localNow(local)) {
         status_ = tr(STR_TABULA_NO_CLOCK);
         requestUpdate();
         return;
       }
-      const bool mass = row == Row::Mass;
-      const std::string path = mass ? tabula::massPath(local) : tabula::hoursPath(local);
+      const std::string path = tabula::massPath(local);
       if (path.empty()) {
         status_ = tr(STR_TABULA_NOT_ON_CARD);
         requestUpdate();
         return;
       }
-      const std::string href =
-          mass ? "introit.xhtml" : std::string(tabula::hourId(tabula::hourIndex(local))) + ".xhtml";
-      activityManager.goToReader(path, false, href);
+      activityManager.goToReader(path, false, "introit.xhtml");
       return;
     }
     case Row::Continue:
       activityManager.goToReader(continuePath_);
       return;
-    case Row::More:
-      if (auto more = makeUniqueNoThrow<TabulaMoreActivity>(renderer, mappedInput)) {
-        activityManager.replaceActivity(std::move(more));
-      } else {
-        LOG_ERR("TABULA", "OOM: TabulaMoreActivity");
+    case Row::Prayers: {
+      const std::string path = tabula::prayersPath();
+      if (path.empty()) {
+        status_ = tr(STR_TABULA_NOT_ON_CARD);
+        requestUpdate();
+        return;
       }
+      activityManager.goToReader(path);
       return;
+    }
+    case Row::Hours:
+      next = makeUniqueNoThrow<TabulaHoursActivity>(renderer, mappedInput);
+      break;
+    case Row::OtherMasses:
+      next = makeUniqueNoThrow<TabulaOtherMassesActivity>(renderer, mappedInput);
+      break;
+    case Row::OrderOfMass:
+      next = makeUniqueNoThrow<OrderOfMassActivity>(renderer, mappedInput);
+      break;
+    case Row::Settings:
+      next = makeUniqueNoThrow<TabulaSettingsActivity>(renderer, mappedInput);
+      break;
+  }
+  if (next) {
+    activityManager.replaceActivity(std::move(next));
+  } else {
+    LOG_ERR("TABULA", "OOM: Tabula screen");
   }
 }
 
@@ -197,17 +232,18 @@ void TabulaHomeActivity::render(RenderLock&&) {
   for (int i = 0; i < rowCount_; i++) {
     const int y = ROWS_TOP + i * ROW_H;
     const bool isSelected = i == selected_;
-    if (isSelected) renderer.fillRect(SIDE, y, width - 2 * SIDE, ROW_H - 6, true);
+    if (isSelected) renderer.fillRect(SIDE, y, width - 2 * SIDE, FILL_H, true);
     const bool ink = !isSelected;
-    drawQuatrefoil(renderer, MARK_X, y + (ROW_H - 6) / 2, ink);
-    renderer.drawText(labelFont, TEXT_X, y + 4, labels_[i].c_str(), ink);
+    drawQuatrefoil(renderer, MARK_X, y + FILL_H / 2, ink);
+    // Label sits high so its descenders clear the subtitle below.
+    renderer.drawText(labelFont, TEXT_X, y - 7, labels_[i].c_str(), ink);
     const std::string sub =
         renderer.truncatedText(SMALL_FONT_ID, subtitles_[i].c_str(), width - TEXT_X - SIDE - 8, EpdFontFamily::ITALIC);
-    renderer.drawText(SMALL_FONT_ID, TEXT_X, y + ROW_H - 30, sub.c_str(), ink, EpdFontFamily::ITALIC);
+    renderer.drawText(SMALL_FONT_ID, TEXT_X, y + FILL_H - 17, sub.c_str(), ink, EpdFontFamily::ITALIC);
   }
 
   if (status_) {
-    renderer.drawCenteredText(UI_10_FONT_ID, ROWS_TOP + MAX_ROWS * ROW_H + 10, status_);
+    renderer.drawCenteredText(UI_10_FONT_ID, ROWS_TOP - 22, status_);
   }
 
   const auto labels = mappedInput.mapLabels("", tr(STR_OPEN), tr(STR_DIR_UP), tr(STR_DIR_DOWN));

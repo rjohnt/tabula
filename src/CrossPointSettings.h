@@ -352,7 +352,7 @@ class CrossPointSettings : public PersistableStore<CrossPointSettings> {
   // Which edition of the day's texts Tabula opens (docs/tabula/DESIGN.md §5a).
   uint8_t tabulaText = TABULA_TEXT_BOTH;
   uint8_t tabulaMass = TABULA_MASS_PROPERS;
-  uint8_t tabulaSleepDark = 0;  // sleep screensaver drawn inverted
+  uint8_t tabulaSleepDark = 1;  // sleep screensaver drawn inverted (dark, the default)
   uint8_t tabulaLayout = 0;     // last reading-layout defaults applied (TabulaHomeActivity)
 #endif
   // Dictionary folder name under /dictionaries (empty = no dictionary)

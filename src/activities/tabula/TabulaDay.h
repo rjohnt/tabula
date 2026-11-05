@@ -17,6 +17,10 @@ int hourIndex(const tm& date);
 const char* hourId(int index);       // chapter file stem in the day's Hours book
 const char* hourLatin(int index);    // "Vesperæ"
 const char* hourEnglish(int index);  // "Vespers"
+const char* hourName(int index);     // "Vespers", or "Vísperas" in Spanish
+
+// True when the device language is Spanish: Spanish labels and Latin/Spanish texts.
+bool spanish();
 
 // "YYYY-MM-DD" for a local date.
 std::string dateStem(const tm& date);
@@ -26,6 +30,11 @@ std::string dateStem(const tm& date);
 // day is missing entirely.
 std::string massPath(const tm& date);
 std::string hoursPath(const tm& date);
+std::string propersPath(const tm& date);
+// The common prayers book in the reader's edition. Empty when not on the card.
+std::string prayersPath();
+// The day's feast from /Tabula/calendar.tsv. Empty when the day is not listed.
+std::string feastName(const tm& date);
 // Day artwork drawn off-device: Today's header and the sleep screen.
 std::string headerArtPath(const tm& date);
 std::string sleepArtPath(const tm& date);

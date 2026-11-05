@@ -1,5 +1,6 @@
 #include "TabulaSettingsActivity.h"
 
+#include <HalClock.h>
 #include <I18n.h>
 #include <Logging.h>
 #include <Memory.h>
@@ -8,10 +9,12 @@
 #include <memory>
 
 #include "CrossPointSettings.h"
-#include "TabulaMoreActivity.h"
+#include "I18nKeys.h"
+#include "TabulaDay.h"
 #include "activities/ActivityManager.h"
 #include "activities/network/WifiSelectionActivity.h"
 #include "activities/settings/AboutActivity.h"
+#include "activities/settings/ClockSettingsActivity.h"
 #include "components/UITheme.h"
 
 namespace fui = freeink::ui;
@@ -46,13 +49,7 @@ TabulaSettingsActivity::TabulaSettingsActivity(GfxRenderer& renderer, MappedInpu
 
 const char* TabulaSettingsActivity::headerTitle() const { return tr(STR_SETTINGS_TITLE); }
 
-void TabulaSettingsActivity::onBackButton() {
-  if (auto more = makeUniqueNoThrow<TabulaMoreActivity>(renderer, mappedInput)) {
-    activityManager.replaceActivity(std::move(more));
-  } else {
-    activityManager.goHome();
-  }
-}
+void TabulaSettingsActivity::onBackButton() { activityManager.goHome(); }
 
 void TabulaSettingsActivity::refreshSubtitles() {
   textSize_ = std::string(TEXT_SIZE_NAMES[textSizeIndex()]) + " · " + std::to_string(SETTINGS.fontPointSize) + " pt";
@@ -60,6 +57,10 @@ void TabulaSettingsActivity::refreshSubtitles() {
     switch (rows_[i]) {
       case Row::TextSize:
         rowItems_[i].subtitle = textSize_.c_str();
+        break;
+      case Row::Language:
+        // Each language is named in itself.
+        rowItems_[i].subtitle = tabula::spanish() ? "Español" : "English";
         break;
       case Row::ReadingText:
         rowItems_[i].subtitle = readingTextName();
@@ -81,7 +82,7 @@ void TabulaSettingsActivity::refreshSubtitles() {
   }
 }
 
-void TabulaSettingsActivity::onEnter() {
+void TabulaSettingsActivity::buildRows() {
   rowCount_ = 0;
   const auto add = [this](Row row, const char* label) {
     rows_[rowCount_] = row;
@@ -90,15 +91,22 @@ void TabulaSettingsActivity::onEnter() {
     rowCount_++;
   };
   add(Row::TextSize, tr(STR_TABULA_TEXT_SIZE));
+  add(Row::Language, tr(STR_TABULA_LANGUAGE));
   add(Row::ReadingText, tr(STR_TABULA_READING_TEXT));
   add(Row::MassText, tr(STR_TABULA_MASS_TEXT));
   add(Row::SleepScreen, tr(STR_TABULA_SLEEP_SCREEN));
   add(Row::Wifi, tr(STR_TABULA_WIFI));
+  if (halClock.isAvailable()) add(Row::DateTime, tr(STR_TABULA_DATE_TIME));
   add(Row::About, tr(STR_TABULA_ABOUT));
 #if !TABULA_PARISH
+  add(Row::Library, tr(STR_TABULA_LIBRARY));
   add(Row::AllSettings, tr(STR_TABULA_ALL_SETTINGS));
 #endif
   refreshSubtitles();
+}
+
+void TabulaSettingsActivity::onEnter() {
+  buildRows();
   UiListActivity::onEnter();
 }
 
@@ -124,6 +132,16 @@ void TabulaSettingsActivity::activateIndex(const int index) {
       // The reader reloads the SD font at the new size when it next opens.
       SETTINGS.fontPointSize = TEXT_SIZES[(textSizeIndex() + 1) % std::size(TEXT_SIZES)];
       break;
+    case Row::Language: {
+      // English or Spanish, each with Latin; the labels change with it.
+      const Language next = tabula::spanish() ? Language::EN : Language::ES;
+      SETTINGS.language = static_cast<uint8_t>(next);
+      I18N.setLanguage(next);
+      SETTINGS.saveToFile();
+      buildRows();
+      requestUpdate();
+      return;
+    }
     case Row::ReadingText:
       SETTINGS.tabulaText = (SETTINGS.tabulaText + 1) % CrossPointSettings::TABULA_TEXT_COUNT;
       break;
@@ -146,10 +164,18 @@ void TabulaSettingsActivity::activateIndex(const int index) {
       });
       return;
     }
+    case Row::DateTime:
+      if (auto activity = makeUniqueNoThrow<ClockSettingsActivity>(renderer, mappedInput)) {
+        startActivityForResult(std::move(activity), nullptr);
+      }
+      return;
     case Row::About:
       if (auto activity = makeUniqueNoThrow<AboutActivity>(renderer, mappedInput)) {
         startActivityForResult(std::move(activity), nullptr);
       }
+      return;
+    case Row::Library:
+      activityManager.goToFileBrowser("/");
       return;
     case Row::AllSettings:
       activityManager.goToSettings();

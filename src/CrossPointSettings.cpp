@@ -288,7 +288,7 @@ bool CrossPointSettings::fromJson(JsonVariantConst doc) {
 #if TABULA
   tabulaText = clamp(doc["tabulaText"] | (uint8_t)TABULA_TEXT_BOTH, TABULA_TEXT_COUNT, TABULA_TEXT_BOTH);
   tabulaMass = clamp(doc["tabulaMass"] | (uint8_t)TABULA_MASS_PROPERS, TABULA_MASS_COUNT, TABULA_MASS_PROPERS);
-  tabulaSleepDark = clamp(doc["tabulaSleepDark"] | (uint8_t)0, 2, 0);
+  tabulaSleepDark = clamp(doc["tabulaSleepDark"] | (uint8_t)1, 2, 1);
   tabulaLayout = doc["tabulaLayout"] | (uint8_t)0;
 #endif
   // Dictionary folder name — uses dynamic getter/setter in SettingsList, load manually

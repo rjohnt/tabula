@@ -27,6 +27,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 ORDO = REPO / "docs/tabula/sd/Tabula/Missal/ordo.json"
+# Common prayers, from the muse pocket (backmuse tools/office/prayers.json).
+PRAYERS = REPO / "docs/tabula/sd/Tabula/Prayers/prayers.json"
 
 # Divinum Officium section heading -> ordo.json step id.
 HEADING_ID = {
@@ -60,11 +62,12 @@ HOURS = [("matins", "Matins", "Ad Matutinum"), ("lauds", "Lauds", "Ad Laudes"), 
          ("vespers", "Vespers", "Ad Vesperas"), ("compline", "Compline", "Ad Completorium")]
 FERIA_LA = ["Feria II", "Feria III", "Feria IV", "Feria V", "Feria VI", "Sabbato", "Dominica"]
 
+# p.pair has no margins: the reader's extra paragraph spacing alone separates pairs.
 CSS = """body{margin:0 0.4em}
 h1{text-align:center;font-size:1.4em;margin:1.2em 0 0.3em}
 h2{text-align:center;font-size:1.15em;margin:0.6em 0 0.5em}
 p{margin:0.35em 0;text-indent:0}
-p.pair{margin:0.45em 0}
+p.pair{margin:0}
 p.en1{margin:0.35em 0}
 p.ref{text-align:center;font-size:0.85em;margin:0.6em 0 0.2em}
 p.cue{text-align:center;font-style:italic;margin:1.2em 0}
@@ -381,6 +384,35 @@ def build_hours_day(out, d, hours, texts):
     write_epub(out / f"Tabula/Hours/{d}.hours{EDITION}.epub", f"tabula-hours{EDITION}-{d}", book_title("Horæ", d, feast), parts)
 
 
+def prayer_html(b):
+    la, en = b.get("latin", "").strip(), b.get("english", "").strip()
+    if b["kind"] == "heading":
+        return f"<h2>{fmt(la or en)}</h2>"
+    if b["kind"] == "note":
+        return f'<p class="cue">{fmt(en)}</p>'
+    la_lines, en_lines = la.split("\n") if la else [], en.split("\n") if en else []
+    if EDITION == ".la":
+        return "".join(f'<p class="la">{fmt(x)}</p>' for x in la_lines) if la else ""
+    if EDITION == ".en" or not la:
+        return "".join(f'<p class="en1">{fmt(y)}</p>' for y in en_lines)
+    # prayers.json puts matching Latin and English on matching lines.
+    if len(la_lines) == len(en_lines):
+        pairs = zip(la_lines, en_lines)
+    else:
+        pairs = phrases(la, en)
+    return "".join(f'<p class="pair">{fmt(x)}<br/><i>{fmt(y)}</i></p>' for x, y in pairs)
+
+
+def build_prayers(out):
+    prayers = json.loads(PRAYERS.read_text())["prayers"]
+    items = "".join(f"<p class=\"c\">{fmt(p['title'])}</p>" for p in prayers)
+    parts = [("title", "Orationes", f'<h1>Orationes</h1><p class="c"><i>Prayers</i></p>{items}')]
+    for i, pr in enumerate(prayers):
+        body = f"<h1>{fmt(pr['title'])}</h1>" + "".join(prayer_html(b) for b in pr["blocks"])
+        parts.append((f"prayer{i + 1}", pr["title"], body))
+    write_epub(out / f"Tabula/Prayers/Orationes{EDITION}.epub", f"tabula-prayers{EDITION}", "Orationes · Prayers", parts)
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--mass", type=Path, required=True)
@@ -397,7 +429,7 @@ def main():
 
     mass = json.loads(a.mass.read_text())
     office = json.loads(a.office.read_text())
-    for sub in ("Tabula/Today", "Tabula/Hours", "Tabula/Missal"):
+    for sub in ("Tabula/Today", "Tabula/Hours", "Tabula/Missal", "Tabula/Prayers"):
         for f in (a.out / sub).glob("*.epub") if (a.out / sub).exists() else []:
             f.unlink()
 
@@ -410,6 +442,7 @@ def main():
         for ds, day in days.items():
             build_mass_day(a.out, dt.date.fromisoformat(ds), day)
         build_ordinary(a.out, days[ord_day])
+        build_prayers(a.out)
         for ds, trad in office["days"].items():
             hours = trad.get("roman1962")
             if hours:
@@ -417,6 +450,9 @@ def main():
 
     (a.out / "Tabula/Missal").mkdir(parents=True, exist_ok=True)
     shutil.copy(ORDO, a.out / "Tabula/Missal/ordo.json")
+    # Other Masses lists each day's feast from this, without opening the books.
+    (a.out / "Tabula/calendar.tsv").write_text(
+        "".join(f"{ds}\t{day['title'].split(' ~ ')[0]}\n" for ds, day in sorted(days.items())))
     src = mass["source"]
     (a.out / "LICENSES.txt").write_text(
         "Tabula content\n\nMass and Office texts: Divinum Officium (https://www.divinumofficium.com), MIT License.\n"

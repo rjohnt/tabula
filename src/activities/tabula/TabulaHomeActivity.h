@@ -7,7 +7,8 @@
 
 // Tabula home ("Hodie"): the day's feast at the top (artwork drawn off-device,
 // /Tabula/Today/<date>.head.bmp) and a few large choices under it: today's Mass,
-// the Hour now, Continue, and More. Nothing here shows folders or file names.
+// the Hours, Continue, other days' Masses, the Order of Mass, Prayers and Settings. Nothing here shows folders or file
+// names.
 class TabulaHomeActivity final : public Activity {
  public:
   explicit TabulaHomeActivity(GfxRenderer& renderer, MappedInputManager& mappedInput);
@@ -18,8 +19,8 @@ class TabulaHomeActivity final : public Activity {
   bool isHomeActivity() const override { return true; }
 
  private:
-  enum class Row : uint8_t { Mass, Hour, Continue, More };
-  static constexpr int MAX_ROWS = 4;
+  enum class Row : uint8_t { Mass, Hours, Continue, OtherMasses, OrderOfMass, Prayers, Settings };
+  static constexpr int MAX_ROWS = 7;
 
   void applyFirstRunDefaults();
   void activate(Row row);

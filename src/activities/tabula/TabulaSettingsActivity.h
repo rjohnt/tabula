@@ -13,8 +13,19 @@ class TabulaSettingsActivity final : public UiListActivity {
   void onEnter() override;
 
  private:
-  enum class Row : uint8_t { TextSize, ReadingText, MassText, SleepScreen, Wifi, About, AllSettings };
-  static constexpr int MAX_ROWS = 7;
+  enum class Row : uint8_t {
+    TextSize,
+    Language,
+    ReadingText,
+    MassText,
+    SleepScreen,
+    Wifi,
+    DateTime,
+    About,
+    Library,
+    AllSettings
+  };
+  static constexpr int MAX_ROWS = 10;
 
   int listCount() const override { return rowCount_; }
   void buildScreen(UiScreen& screen) override;
@@ -23,6 +34,7 @@ class TabulaSettingsActivity final : public UiListActivity {
   void onBackButton() override;
 
   void refreshSubtitles();
+  void buildRows();
 
   Row rows_[MAX_ROWS]{};
   freeink::ui::ListItem rowItems_[MAX_ROWS]{};
