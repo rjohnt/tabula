@@ -66,7 +66,7 @@ void TabulaHomeActivity::applyFirstRunDefaults() {
   // Layout 1: Latin and English lines set close and flush left (no first-line
   // indent, which would shift only the Latin line), the gap only between pairs.
   if (SETTINGS.tabulaLayout < 1) {
-    SETTINGS.lineSpacing = CrossPointSettings::TIGHT;
+    SETTINGS.lineSpacing = CrossPointSettings::LINE_SPACING_110;
     SETTINGS.paragraphIndentSpaces = 0;
     SETTINGS.extraParagraphSpacing = 1;
   }
